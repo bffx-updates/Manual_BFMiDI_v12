@@ -2159,6 +2159,52 @@
     </svg>`;
   }
 
+  // BFMIDI-3 NANO — mesmo 2x3 do BFMIDI-2 NANO, mas com o DISPLAY MAIOR
+  // (BFMIDI-3 usa tela 480x320). Sem LIVE/GLOBAL (combo SW1+SW2 entra em LIVE).
+  function mnHwTopSvg3nano() {
+    return `
+    <svg viewBox="0 0 490 310" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Vista superior do BFMIDI-3 NANO: display grande ao centro; SW4 SW5 SW6 em cima e SW1 SW2 SW3 embaixo">
+      <rect x="8" y="8" width="474" height="294" rx="10" fill="none" style="stroke:var(--accent)" stroke-width="1.9"/>
+      <rect x="160" y="105" width="170" height="100" rx="16" fill="none" style="stroke:var(--accent)" stroke-width="1.7"/>
+      ${mnHwFoot(70, 62, "sw4", 30, 15, 1.8)}
+      ${mnHwFoot(245, 62, "sw5", 30, 15, 1.8)}
+      ${mnHwFoot(420, 62, "sw6", 30, 15, 1.8)}
+      ${mnHwFoot(70, 248, "sw1", 30, 15, 1.8)}
+      ${mnHwFoot(245, 248, "sw2", 30, 15, 1.8)}
+      ${mnHwFoot(420, 248, "sw3", 30, 15, 1.8)}
+    </svg>`;
+  }
+
+  // BFMIDI-3 NANO — traseira: 4 portas na ordem 9v · USB DEVICE · MIDI TRS OUT
+  // · USB HOST (o USB HOST aqui é o "Plus"; rótulo igual). Rótulos escalonados.
+  function mnHwRearSvg3nano() {
+    const port = (x, arrowEnd, labelY, lines) => {
+      const arrow = `
+        <line x1="${x}" y1="106" x2="${x}" y2="${arrowEnd - 8}" style="stroke:var(--muted)" stroke-width="1.8"/>
+        <path d="M ${x} ${arrowEnd} l -6 -10 h 12 z" style="fill:var(--muted)"/>`;
+      const txt = lines.map((l, i) =>
+        `<text x="${x}" y="${labelY + i * 16}" text-anchor="middle" font-family="JetBrains Mono, ui-monospace, monospace" font-size="12" letter-spacing="0.8" style="fill:var(--text)">${l}</text>`
+      ).join("");
+      return arrow + txt;
+    };
+    return `
+    <svg viewBox="0 0 640 305" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Vista traseira do BFMIDI-3 NANO: alimentação 9v centro-negativo, USB DEVICE, MIDI TRS OUT e USB HOST">
+      <rect x="10" y="14" width="620" height="92" rx="10" fill="none" style="stroke:var(--accent)" stroke-width="2.2"/>
+      <circle cx="70" cy="90" r="4" fill="none" style="stroke:var(--accent)" stroke-width="1.7"/>
+      <circle cx="570" cy="90" r="4" fill="none" style="stroke:var(--accent)" stroke-width="1.7"/>
+      <rect x="126" y="44" width="28" height="28" rx="2" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      <rect x="213" y="49" width="44" height="18" rx="9" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      <circle cx="400" cy="58" r="14" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      <rect x="468" y="49" width="44" height="18" rx="9" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      ${port(140, 255, 275, ["9v", "+(-)"])}
+      ${port(235, 186, 206, ["USB", "DEVICE"])}
+      ${port(400, 186, 206, ["MIDI", "TRS OUT"])}
+      ${port(490, 221, 241, ["USB", "HOST"])}
+    </svg>`;
+  }
+
   // Mapa modelo -> desenhos {top, rear}. startsWith cobre as variantes
   // (BFMIDI-1 7S_A1/_B1/_C1 compartilham o mesmo painel).
   function mnHwSvgsFor(modelId) {
@@ -2180,6 +2226,9 @@
     }
     if (modelId === "BFMIDI-2 MICRO") {
       return { top: mnHwTopSvg2micro(), rear: mnHwRearSvg2micro() };
+    }
+    if (modelId === "BFMIDI-3 NANO") {
+      return { top: mnHwTopSvg3nano(), rear: mnHwRearSvg3nano() };
     }
     return null;
   }
