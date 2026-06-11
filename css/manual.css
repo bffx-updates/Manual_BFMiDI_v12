@@ -666,7 +666,14 @@ body.is-theme-light .mn-page-switch {
   text-transform: uppercase;
   color: var(--faint);
   white-space: nowrap;
+  /* Em telas estreitas o chip encolhe com reticências em vez de empurrar o
+     card pra fora da viewport (overflow horizontal no mobile). */
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+.mn-card-head h3 { min-width: 0; }
 .mn-chip {
   display: inline-block;
   font-family: var(--font-mono);
@@ -974,8 +981,16 @@ body.is-theme-light .mn-page-switch {
   border-radius: var(--r-md);
   background: var(--card);
   padding: 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .mn-hw-svg svg { display: block; width: 100%; height: auto; }
+/* Mobile: os painéis largos (4S/6S/6SW+, viewBox ~930-960) encolheriam a
+   ponto de os rótulos ficarem ilegíveis — garante uma escala mínima e deixa
+   o desenho deslizar horizontalmente dentro do slot. */
+@media (max-width: 640px) {
+  .mn-hw-svg svg { min-width: 540px; }
+}
 
 .mn-svg-placeholder {
   position: relative;
