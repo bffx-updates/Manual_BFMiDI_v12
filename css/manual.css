@@ -1,0 +1,1424 @@
+/* BFMiDi · Manual do Usuário — mesma linguagem visual do webApp
+   (iOS dark + laranja BFMIDI). 100% offline, sem fontes externas. */
+
+:root {
+  --bg: #0a0a0c;
+  --screen: #07070a;
+  --card: #141418;
+  --card-2: #1c1c20;
+  --card-3: #232328;
+  --hair: rgba(255,255,255,0.07);
+  --hair-strong: rgba(255,255,255,0.12);
+  --text: #f6f6f8;
+  --muted: rgba(235,235,245,0.6);
+  --faint: rgba(235,235,245,0.32);
+  --ghost: rgba(235,235,245,0.18);
+  --accent: #ff6a1f;
+  --accent-2: #ff8a3a;
+  --accent-soft: rgba(255,106,31,0.16);
+  --accent-glow: rgba(255,106,31,0.55);
+  --success: #30d158;
+  --danger: #ff453a;
+  --blue: #0a84ff;
+
+  --font-sys: -apple-system, "SF Pro Display", "Segoe UI", "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+  --font-display: "Antonio", "Bahnschrift", "Arial Narrow", "SF Pro Display", system-ui, sans-serif;
+
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-xl: 22px;
+  --r-pill: 999px;
+
+  --topbar-h: 58px;
+  --sidebar-w: 290px;
+
+  /* Tela do CELULAR desenhado nos fluxos ilustrados (acesso-flow). Diferente
+     dos mockups bf-* (tela do pedal, sempre dark), o celular é o aparelho do
+     usuário — segue o tema do manual. */
+  --mock-phone-screen: #0b0b0e;
+  --mock-phone-hair: rgba(255,255,255,0.07);
+  --mock-phone-key: rgba(255,255,255,0.07);
+  --mock-phone-speaker: rgba(255,255,255,0.14);
+}
+
+/* ───────────────────────── Tema claro ─────────────────────────
+   Espelha o "is-theme-light" do app: troca as variáveis da casca do
+   manual (topbar/sidebar/cards/modal). Os mockups bf-* continuam dark
+   de propósito — representam a tela do dispositivo (igual no app, onde
+   o tema claro só rege GLOBAL/SYSTEM, não o preview do editor). */
+body.is-theme-light {
+  --bg: #eef1f6;
+  --screen: #e7ebf1;
+  --card: #ffffff;
+  --card-2: #f1f4f9;
+  --card-3: #e4e8ef;
+  --hair: rgba(20,28,40,0.10);
+  --hair-strong: rgba(20,28,40,0.18);
+  --text: #16202e;
+  --muted: rgba(22,32,46,0.62);
+  --faint: rgba(22,32,46,0.42);
+  --ghost: rgba(22,32,46,0.20);
+  --accent-soft: rgba(255,106,31,0.14);
+  --mock-phone-screen: #ffffff;
+  --mock-phone-hair: rgba(20,28,40,0.16);
+  --mock-phone-key: rgba(20,28,40,0.10);
+  --mock-phone-speaker: rgba(20,28,40,0.22);
+  color-scheme: light;
+}
+body.is-theme-light {
+  background:
+    radial-gradient(1200px 700px at 20% -10%, #ffffff 0%, transparent 60%),
+    radial-gradient(900px 600px at 110% 110%, #ffe9dc 0%, transparent 55%),
+    #e9edf3;
+}
+body.is-theme-light .mn-topbar {
+  background: rgba(248,250,253,0.82);
+  border-bottom-color: var(--hair);
+}
+body.is-theme-light .mn-search-pop {
+  background: rgba(255,255,255,0.98);
+  box-shadow: 0 24px 60px -12px rgba(26,34,46,0.28);
+}
+body.is-theme-light .mn-sidebar { background: rgba(255,255,255,0.55); }
+body.is-theme-light .mn-home-tile {
+  background: linear-gradient(180deg, #ffffff 0%, #f1f4f9 100%);
+}
+body.is-theme-light .mn-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f4f6fa 100%);
+}
+body.is-theme-light .mn-modal {
+  background: linear-gradient(180deg, #ffffff 0%, #f1f4f9 100%);
+}
+body.is-theme-light .mk-tag { box-shadow: 0 0 0 2px #ffffff, 0 0 12px -2px var(--accent-glow); }
+
+* { box-sizing: border-box; }
+html { scrollbar-gutter: stable; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(1200px 700px at 20% -10%, #1d1d26 0%, transparent 60%),
+    radial-gradient(900px 600px at 110% 110%, #221823 0%, transparent 55%),
+    #0c0c10;
+  color: var(--text);
+  font-family: var(--font-sys);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+a { color: var(--accent-2); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code, .mono { font-family: var(--font-mono); font-size: 0.92em; }
+code {
+  background: var(--card-2);
+  border: 1px solid var(--hair);
+  border-radius: 6px;
+  padding: 1px 6px;
+  color: var(--accent-2);
+  white-space: nowrap;
+}
+.accent { color: var(--accent); }
+
+/* ───────────────────────── Topbar ───────────────────────── */
+.mn-topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--topbar-h);
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  background: rgba(12,12,16,0.82);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border-bottom: 1px solid var(--hair);
+}
+.mn-burger {
+  display: none;
+  width: 40px; height: 40px;
+  flex: 0 0 auto;
+  align-items: center; justify-content: center;
+  background: var(--card);
+  color: var(--muted);
+  border: 1px solid var(--hair);
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+.mn-burger:hover { color: var(--text); border-color: var(--hair-strong); }
+.mn-brand {
+  display: flex; align-items: center; gap: 10px;
+  color: var(--text); font-weight: 700; letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.mn-brand:hover { text-decoration: none; }
+.mn-brand img { border-radius: 8px; display: block; }
+.mn-brand-name { font-size: 16px; }
+
+/* ───────── Ferramentas (tema + idioma) ───────── */
+.mn-tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  flex: 0 0 auto;
+}
+.mn-theme-seg {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  background: var(--card);
+  border: 1px solid var(--hair);
+  border-radius: var(--r-pill);
+}
+.mn-theme-btn {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  color: var(--faint);
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease, box-shadow 0.2s ease;
+}
+.mn-theme-btn:hover { color: var(--text); }
+.mn-theme-btn.is-on {
+  color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: 0 0 12px -3px var(--accent-glow), inset 0 0 0 1px rgba(255,106,31,0.35);
+}
+.mn-lang-btn {
+  display: flex; align-items: center; gap: 6px;
+  height: 40px;
+  padding: 0 12px;
+  background: var(--card);
+  border: 1px solid var(--hair);
+  border-radius: var(--r-pill);
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, box-shadow 0.2s ease;
+}
+.mn-lang-btn:hover {
+  color: var(--text);
+  border-color: var(--hair-strong);
+  box-shadow: 0 0 12px -4px var(--accent-glow);
+}
+.mn-lang-btn svg { color: var(--accent); flex: 0 0 auto; }
+.mn-lang-code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  min-width: 18px;
+  text-align: center;
+}
+
+.mn-search-wrap { position: relative; margin-left: 12px; width: min(360px, 40vw); }
+.mn-search-ico {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--faint); pointer-events: none;
+}
+.mn-search {
+  width: 100%;
+  height: 40px;
+  padding: 0 14px 0 36px;
+  background: var(--card);
+  border: 1px solid var(--hair);
+  border-radius: var(--r-pill);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.2s ease;
+}
+.mn-search::placeholder { color: var(--faint); }
+.mn-search:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent-glow), 0 8px 30px -10px var(--accent-glow);
+}
+.mn-search-pop {
+  position: absolute;
+  top: calc(100% + 8px); right: 0;
+  width: min(480px, calc(100vw - 32px));
+  max-height: min(60vh, 480px);
+  overflow-y: auto;
+  background: rgba(20,20,24,0.97);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--hair-strong);
+  border-radius: var(--r-lg);
+  box-shadow: 0 24px 60px -12px rgba(0,0,0,0.8);
+  padding: 6px;
+  z-index: 70;
+}
+.mn-search-hit {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: var(--r-md);
+  padding: 10px 12px;
+  cursor: pointer;
+  color: var(--text);
+  font-family: var(--font-sys);
+}
+.mn-search-hit:hover, .mn-search-hit.is-sel { background: var(--card-2); }
+.mn-search-hit .crumb {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  margin-bottom: 3px;
+}
+.mn-search-hit .label { font-size: 14px; font-weight: 600; }
+.mn-search-hit .snip { display: block; font-size: 12px; color: var(--muted); margin-top: 3px; }
+.mn-search-hit .snip mark, .mn-search-hit .label mark {
+  background: var(--accent-soft); color: var(--accent-2);
+  border-radius: 3px; padding: 0 1px;
+}
+.mn-search-empty {
+  padding: 14px;
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-align: center;
+}
+
+/* ───────────────────────── Layout geral ───────────────────────── */
+.mn-shell {
+  display: flex;
+  padding-top: var(--topbar-h);
+  min-height: 100vh;
+}
+.mn-sidebar {
+  width: var(--sidebar-w);
+  flex: 0 0 auto;
+  position: sticky;
+  top: var(--topbar-h);
+  height: calc(100vh - var(--topbar-h));
+  overflow-y: auto;
+  border-right: 1px solid var(--hair);
+  background: rgba(10,10,13,0.5);
+}
+.mn-sidebar-inner { padding: 18px 12px 40px; }
+.mn-side-home {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--r-md);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.mn-side-home:hover { background: var(--card); color: var(--text); text-decoration: none; }
+.mn-side-home.is-active { background: var(--accent-soft); color: var(--accent-2); }
+.mn-side-sec { margin-top: 10px; }
+.mn-side-sec-btn {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  background: transparent;
+  border: 0;
+  border-radius: var(--r-md);
+  color: var(--text);
+  font-family: var(--font-sys);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+}
+.mn-side-sec-btn:hover { background: var(--card); text-decoration: none; }
+.mn-side-sec-btn .ico { color: var(--accent); flex: 0 0 auto; display: flex; }
+.mn-side-sec-btn .chev {
+  margin-left: auto; color: var(--faint);
+  transition: transform 0.18s ease;
+  flex: 0 0 auto; display: flex;
+}
+.mn-side-sec.is-open .mn-side-sec-btn .chev { transform: rotate(90deg); }
+.mn-side-sec.is-active > .mn-side-sec-btn { background: var(--accent-soft); color: var(--accent-2); }
+.mn-side-sec.is-active > .mn-side-sec-btn .ico { color: var(--accent-2); }
+.mn-side-cards { display: none; padding: 2px 0 4px 16px; }
+.mn-side-sec.is-open .mn-side-cards { display: block; }
+.mn-side-card {
+  display: block;
+  padding: 7px 12px;
+  border-left: 1px solid var(--hair);
+  color: var(--muted);
+  font-size: 12.5px;
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+}
+.mn-side-card:hover { color: var(--text); background: var(--card); text-decoration: none; }
+.mn-side-card.is-active { color: var(--accent-2); border-left-color: var(--accent); background: var(--accent-soft); }
+.mn-sidebar-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(2px);
+  z-index: 49;
+}
+
+.mn-main {
+  flex: 1;
+  min-width: 0;
+  padding: 26px clamp(16px, 4vw, 48px) 90px;
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+/* ───────────────────────── Home ───────────────────────── */
+.mn-hero { padding: 18px 4px 8px; }
+.mn-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex; align-items: center; gap: 8px;
+}
+.mn-eyebrow .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 8px var(--success);
+}
+.mn-title {
+  font-size: clamp(30px, 6vw, 42px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 8px 0 6px;
+  line-height: 1.05;
+}
+.mn-subtitle { color: var(--muted); font-size: 15px; margin: 0 0 10px; max-width: 640px; line-height: 1.55; }
+
+/* ───────── Seletor de páginas (rodapé da home) ─────────
+   Pill fixo no rodapé que alterna Primeiros Passos ↔ Manual Completo,
+   no mesmo visual do StudioToggle do app. Só existe na home. */
+.mn-page-switch {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 45;
+  display: flex;
+  gap: 4px;
+  padding: 5px;
+  border-radius: var(--r-pill);
+  background: rgba(16,16,20,0.85);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid var(--hair-strong);
+  box-shadow: 0 14px 40px -10px rgba(0,0,0,0.75);
+}
+body.is-theme-light .mn-page-switch {
+  background: rgba(250,251,253,0.88);
+  box-shadow: 0 14px 40px -14px rgba(26,34,46,0.45);
+}
+.mn-page-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+.mn-page-btn:hover { color: var(--text); }
+.mn-page-btn .dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--ghost);
+  flex: 0 0 auto;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+.mn-page-btn.is-on {
+  color: #1a0e06;
+  background: linear-gradient(180deg, var(--accent-2) 0%, var(--accent) 100%);
+  box-shadow:
+    0 8px 22px -8px var(--accent-glow),
+    inset 0 1px 0 rgba(255,255,255,0.28);
+}
+.mn-page-btn.is-on .dot {
+  background: #1a0e06;
+  box-shadow: none;
+}
+.mn-page-switch-spacer { height: 84px; }
+@media (max-width: 560px) {
+  .mn-page-btn { padding: 0 12px; font-size: 10.5px; height: 40px; }
+  .mn-page-switch { bottom: 12px; max-width: calc(100vw - 20px); }
+}
+
+/* Rótulo de grupo de páginas na sidebar (PRIMEIROS PASSOS / MANUAL COMPLETO) */
+.mn-side-page-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 14px 4px 2px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.mn-side-page-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--hair);
+}
+
+.mn-home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 14px;
+  margin-top: 22px;
+}
+.mn-home-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: linear-gradient(180deg, #1b1b20 0%, #131318 100%);
+  border: 1px solid var(--hair);
+  border-radius: var(--r-xl);
+  padding: 18px;
+  color: var(--text);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.15s ease;
+}
+.mn-home-tile:hover {
+  text-decoration: none;
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent-glow), 0 12px 40px -8px var(--accent-glow);
+}
+.mn-home-tile .ico {
+  width: 42px; height: 42px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--r-md);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.mn-home-tile h3 { margin: 0; font-size: 16px; letter-spacing: -0.01em; }
+.mn-home-tile p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; flex: 1; }
+.mn-home-tile .meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* ───────────────────────── Página de seção ───────────────────────── */
+.mn-crumbs {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+  padding: 4px;
+  flex-wrap: wrap;
+}
+.mn-crumbs a { color: var(--muted); }
+.mn-crumbs .sep { color: var(--ghost); }
+.mn-crumbs .here { color: var(--accent-2); }
+
+.mn-sec-intro {
+  color: var(--muted);
+  font-size: 14.5px;
+  line-height: 1.65;
+  max-width: 700px;
+}
+.mn-sec-intro p { margin: 10px 0; }
+.mn-sec-intro strong { color: var(--text); }
+
+.mn-section-label {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 26px 6px 8px;
+}
+.mn-section-label::before {
+  content: "";
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+/* Card de documentação */
+.mn-card {
+  background: linear-gradient(180deg, #17171c 0%, #121216 100%);
+  border: 1px solid var(--hair);
+  border-radius: var(--r-xl);
+  padding: 20px 20px 16px;
+  margin-top: 16px;
+  scroll-margin-top: calc(var(--topbar-h) + 16px);
+}
+.mn-card.is-flash {
+  animation: mn-flash 1.6s ease;
+}
+@keyframes mn-flash {
+  0%, 40% { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent-glow), 0 12px 40px -8px var(--accent-glow); }
+  100% { border-color: var(--hair); box-shadow: none; }
+}
+.mn-card-head {
+  display: flex; align-items: baseline; gap: 10px;
+  border-bottom: 1px solid var(--hair);
+  padding-bottom: 12px;
+  margin-bottom: 4px;
+}
+.mn-card-head h3 {
+  margin: 0;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+}
+.mn-card-head h3 a { color: inherit; }
+.mn-card-head h3 a:hover { color: var(--accent-2); text-decoration: none; }
+.mn-card-head .meta {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+  white-space: nowrap;
+}
+.mn-chip {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  background: var(--accent-soft);
+  border: 1px solid rgba(255,106,31,0.35);
+  border-radius: var(--r-pill);
+  padding: 2px 9px;
+  white-space: nowrap;
+}
+
+.mn-block-label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin: 18px 0 8px;
+}
+.mn-purpose { color: var(--text); font-size: 14.5px; line-height: 1.6; margin: 12px 0 0; }
+.mn-purpose strong { color: var(--accent-2); }
+
+.mn-howto { margin: 0; padding-left: 20px; color: var(--muted); font-size: 14px; line-height: 1.65; }
+.mn-howto li { margin: 5px 0; }
+.mn-howto li::marker { color: var(--accent); font-family: var(--font-mono); }
+.mn-howto strong { color: var(--text); }
+
+/* Campos com ícone (i) */
+.mn-fields { display: flex; flex-direction: column; gap: 6px; }
+.mn-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--card-2);
+  border: 1px solid var(--hair);
+  border-radius: var(--r-md);
+  padding: 9px 12px;
+}
+.mn-field .name {
+  font-size: 13.5px;
+  font-weight: 600;
+  min-width: 0;
+}
+.mn-field .type {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+  background: var(--card);
+  border: 1px solid var(--hair);
+  border-radius: var(--r-pill);
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+.mn-field .spacer { flex: 1; }
+.mn-info {
+  flex: 0 0 auto;
+  width: 26px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent;
+  border: 1px solid rgba(255,106,31,0.45);
+  border-radius: 50%;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, box-shadow 0.2s ease, transform 0.1s ease;
+}
+.mn-info:hover {
+  background: var(--accent-soft);
+  box-shadow: 0 0 12px -2px var(--accent-glow);
+}
+.mn-info:active { transform: scale(0.92); }
+
+/* Exemplos e observações */
+.mn-examples {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.mn-examples li {
+  background: var(--card);
+  border: 1px solid var(--hair);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--r-sm);
+  padding: 10px 12px;
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+.mn-examples li strong { color: var(--text); }
+.mn-notes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.mn-notes li {
+  display: flex; gap: 9px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.mn-notes li::before {
+  content: "⚠";
+  color: #ffcc33;
+  flex: 0 0 auto;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.mn-notes li strong { color: var(--text); }
+
+/* ───────────── Mockup do card do app (markup REAL bf-*) ─────────────
+   O conteúdo do mock usa o app.css verdadeiro; aqui só o wrapper, as
+   tags numeradas e os poucos elementos sem equivalente direto. */
+.mn-mock { margin-top: 4px; }
+.mn-mock .bf-card { overflow: visible; }       /* tags saem da borda */
+
+/* Os mockups são .bf-screen de verdade: no tema claro do manual eles ganham
+   a classe is-theme-light (syncMockTheme no manual.js) e as regras
+   .bf-screen.is-theme-light do app.css valem dentro deles — os cards
+   respondem ao modo claro igual no app. Aqui só neutralizamos o layout de
+   página do .bf-screen (flex/altura/overflow/fundo). */
+.mn-mock.bf-screen {
+  display: block;
+  height: auto;
+  min-height: 0;                     /* app.css dá min-height:100vh ao .bf-screen —
+                                        aqui a moldura tem o tamanho do conteúdo */
+  overflow: visible;                 /* tags saem da borda */
+  background: transparent;
+}
+.mn-mock.bf-screen::before { content: none; }
+.mn-mock .bf-content-bank { padding: 0; }
+/* Sem o 100vh acima, os filhos com flex:1 1 0 do layout desktop do app
+   (dashboard/grid) colapsariam a zero — no mock, dimensionam pelo conteúdo. */
+.mn-mock :is(.bf-preset-dash, .bf-preset-dash-grid, .bf-studio-sw-preview) {
+  flex: none;
+  min-height: auto;
+  overflow: visible;
+}
+
+/* SYSTEM > WIFI (cards reais bf-wifi-* / bfg-wifi-*) — empilha os 3 cards
+   na largura de celular, anulando o grid/padding de página do
+   .bf-content-system real (que aqui é só o escopo dos estilos Studio). */
+.mn-mock-wifi .bf-content-system {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0;
+}
+.mn-mock-wifi .bf-card {
+  position: relative;
+  overflow: visible;                 /* tags saem da borda */
+  margin: 0;
+}
+.mn-mock-wifi .bf-card > .mk-tag { top: -7px; right: -7px; }
+.mn-mock-wifi .bfg-select-box.mn-cell .mk-tag { top: -10px; }
+.mn-mock-wifi .bfg-wifi-actions .mn-cell { position: relative; display: block; }
+.mn-mock-wifi .bfg-wifi-actions .bfg-btn { width: 100%; }
+.mn-mock-wifi .bfg-select-lg { text-align: left; }
+.mn-mock-wifi :is(button, input, .bf-input) { pointer-events: none; }
+
+/* GLOBAL (cards reais bfg-* / Studio) — mesmo tratamento do wifi. */
+.mn-mock-global .bf-content-global {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0;
+}
+.mn-mock-global .bf-card {
+  position: relative;
+  overflow: visible;
+  margin: 0;
+}
+.mn-mock-global .bf-card > .mk-tag { top: -7px; right: -7px; }
+.mn-mock-global :is(.bfg-select-box, .bf-auto-row, .bf-seg, .bfg-ch-tile,
+                    .bfg-toggle-card, .bf-cycle, .bf-letter-chips,
+                    .bfg-layout-grid, .bfg-media-tile).mn-cell .mk-tag { top: -10px; }
+.mn-mock-global .bfg-select-lg { text-align: left; }
+.mn-mock-global .bfg-exp-head .mn-cell { position: relative; display: inline-flex; }
+.mn-mock-global :is(button, input, .bf-input):not(.mk-tag) { pointer-events: none; }
+/* Abas de sub-seção (bf-icon-tabs REAIS do app) nas páginas GLOBAL/SYSTEM.
+   O wrapper é .mn-mock.bf-screen (tema sincronizado), mas as abas são
+   interativas: filtram os cards mostrados, igual no app. */
+.mn-sec-tabs { margin: 22px 0 4px; }
+.mn-sec-tabs :is(.bf-content-global, .bf-content-system) {
+  padding: 0;
+  max-width: 560px;
+  margin: 0 auto;
+}
+.mn-sec-tabs .bf-icon-tab { cursor: pointer; }
+.mn-side-tab-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  margin: 10px 0 4px;
+  padding: 5px 10px;
+  border-radius: var(--r-sm);
+  background: linear-gradient(90deg, var(--accent-soft) 0%, transparent 80%);
+}
+.mn-side-tab-label::before {
+  content: "";
+  width: 5px; height: 5px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent-glow);
+}
+/* primeira aba não precisa do respiro extra de cima */
+.mn-side-cards > .mn-side-tab-label:first-child { margin-top: 4px; }
+
+/* PRESET (componentes reais Studio bank) + SYSTEM — mesmo tratamento. */
+.mn-mock-bank .bf-content-bank,
+.mn-mock-system .bf-content-system {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0;
+}
+:is(.mn-mock-bank, .mn-mock-system) :is(.bf-card, .bf-studio-now-playing, .bf-preset-dash, .bf-studio-sw-preview) {
+  position: relative;
+  overflow: visible;
+  margin: 0;
+}
+:is(.mn-mock-bank, .mn-mock-system) .bf-card > .mk-tag { top: -7px; right: -7px; }
+.mn-mock :is(.bf-bank-tile, .bf-preset, .bf-conn-mode, .bf-save, .bf-studio-sw-tile,
+             .bfg-backup-btn, .bf-studio-np-cc-val, .bf-tabbar,
+             .bf-preset-dash-card, .bfg-media-tile, .bfg-toggle-card) { overflow: visible; }
+.mn-mock .bf-preset-dash-card > .mk-tag { top: -8px; right: -8px; }
+.mn-mock .bf-bank-tile > .mk-tag { top: -8px; right: -8px; }
+:is(.mn-mock-bank, .mn-mock-system) :is(button, input, .bf-input):not(.mk-tag) { pointer-events: none; }
+
+/* CONEXOES: seletor de modelo + dois slots reservados para SVGs fisicos. */
+.mn-mock-connections .bf-content-system {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 0;
+}
+.mn-mock-connections .bf-card {
+  position: relative;
+  overflow: visible;
+  margin: 0;
+}
+.mn-mock-connections .bfg-family-grid > .mk-tag { top: -10px; }
+.mn-mock-connections .bfg-variant-list { margin-bottom: 14px; }
+.mn-mock-connections :is(.bfg-family-btn, .bfg-variant-row) { cursor: pointer; }
+.mn-svg-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+.mn-svg-slot {
+  position: relative;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--hair);
+  border-radius: var(--r-md);
+  background: linear-gradient(180deg, var(--card-2) 0%, var(--card) 100%);
+}
+.mn-svg-slot > .mk-tag { top: -8px; right: -8px; }
+.mn-svg-slot-head {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 10px;
+}
+.mn-svg-slot-head span {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+.mn-svg-slot-head small {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.mn-svg-placeholder {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  min-height: 140px;
+  border: 1px dashed rgba(255,106,31,0.44);
+  border-radius: var(--r-md);
+  background:
+    linear-gradient(135deg, rgba(255,106,31,0.10) 0%, transparent 52%),
+    #0b0b0e;
+  overflow: hidden;
+}
+.mn-svg-placeholder svg {
+  width: 82%;
+  height: auto;
+  fill: none;
+  stroke: rgba(255,255,255,0.22);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.mn-svg-placeholder span {
+  position: absolute;
+  left: 12px;
+  bottom: 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+}
+body.is-theme-light .mn-svg-placeholder {
+  background:
+    linear-gradient(135deg, rgba(255,106,31,0.12) 0%, transparent 52%),
+    #f8fafd;
+}
+body.is-theme-light .mn-svg-placeholder svg { stroke: rgba(22,32,46,0.22); }
+/* Topo do PRESET: dentro do mock vale o layout COMPACTO do app mobile.
+   Sem isto, o breakpoint desktop (≥900px de viewport) e as fontes clamp()
+   baseadas em vw estouravam o tile do banco e os presets (desproporcional
+   na moldura de 480px). Tamanhos fixos espelham o app num celular. */
+.mn-mock-bank .bf-content-bank .bf-bank-row {
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  grid-auto-rows: 1fr;
+  gap: 10px;
+  margin: 0;
+}
+.mn-mock-bank .bf-content-bank .bf-bank-tile {
+  grid-column: 1 / 2;
+  grid-row: 1 / span 2;
+  aspect-ratio: auto;
+}
+.mn-mock-bank .bf-content-bank .bf-bank-tile .letter { font-size: 56px; }
+.mn-mock-bank .bf-content-bank .bf-bank-tile .bf-bank-name { font-size: 9px; }
+.mn-mock-bank .bf-content-bank .bf-preset {
+  aspect-ratio: 1;
+  justify-content: space-between;
+}
+.mn-mock-bank .bf-content-bank .bf-preset .num { font-size: 26px; margin-top: 2px; }
+.mn-mock-bank .bf-content-bank .bf-preset .label {
+  position: static;
+  font-size: 7.5px;
+  letter-spacing: 0.14em;
+  padding: 0;
+  text-transform: uppercase;
+}
+
+/* Toggle PRESET/LIVE do topo: no desktop o app esconde a linha
+   (.bf-studio-toggle-row-top { display:none } — o toggle vive no header);
+   no mock ela é o próprio assunto, então fica sempre visível. */
+.mn-mock-bank .bf-content-bank .bf-studio-toggle-row-top { display: grid; }
+
+/* Badge de LAYER do StudioToggle: a tag mora dentro do botão redondo
+   (o .bf-studio-toggle-center é position:absolute no centro do pill —
+   não pode virar mn-cell, senão o badge cai fora do toggle). */
+.mn-mock .bf-studio-layer-badge { position: relative; overflow: visible; }
+.mn-mock .bf-studio-layer-badge > .mk-tag { top: -10px; right: -16px; }
+
+.mn-mock-bank .mn-cell-row { display: flex; gap: 8px; justify-content: flex-end; position: relative; }
+.mn-mock-bank .mn-cell-flex { position: relative; display: flex; min-width: 0; }
+.mn-mock-bank .mn-cell-flex > .bf-preset { flex: 1; }
+.mn-mock :is(.mn-cell-block) { position: relative; display: block; }
+/* tabbar do mock: estática (a real é fixed no rodapé) */
+.mn-mock-bank .mn-tabbar-static {
+  position: static;
+  transform: none;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+.mn-mock-bank .mn-plus-menu-static {
+  position: static;
+  margin-top: 10px;
+  width: 100%;
+}
+/* tags dentro dos botões do app (conn-mode, pills, tiles) */
+.mn-mock :is(.bf-conn-mode, .bf-studio-np-tela-sq, .bf-studio-np-slot-sq,
+             .bf-studio-picker, .bf-studio-np-extra-wrap, .bf-studio-np-extra-type,
+             .bf-studio-np-cc-val, .bf-studio-np-extra-x, .bf-studio-sw-tile,
+             .bf-tabbar-plus-item, .bf-save, .bfg-backup-btn, .bf-bank-tile,
+             .bf-studio-toggle-center).mn-cell,
+.mn-mock :is(.bf-conn-mode, .bf-studio-np-tela-sq, .bf-studio-np-slot-sq,
+             .bf-studio-np-extra-type, .bf-studio-np-cc-val, .bf-studio-np-extra-x,
+             .bf-studio-sw-tile, .bf-tabbar-plus-item, .bf-save, .bfg-backup-btn,
+             .bf-bank-tile) { position: relative; }
+
+/* SVG do fluxo de chamada de preset (Visão geral) */
+.mn-mock-flow .mn-flow-wrap {
+  position: relative;
+  max-width: 620px;
+  margin: 0 auto;
+}
+.mn-mock-flow svg { display: block; width: 100%; height: auto; }
+.mn-flow-tag { position: absolute; }
+.mn-mock .mn-flow-tag .mk-tag { position: static; display: inline-flex; }
+
+/* Prévia do tile na aba DISPLAY do SW (placeholder do SwDisplayTile) */
+.mn-disp-tile {
+  width: 96px;
+  height: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 2px solid #ff453a;
+  border-radius: var(--r-md);
+  background: #0a0a0d;
+}
+.mn-disp-tile .mn-disp-sigla {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: #f6f6f8;
+}
+
+/* Reafirma o visual do .mk-tag dentro dos mocks: regras como
+   `.bf-seg button` / `.bf-cycle button` do app.css têm especificidade
+   maior que `.mk-tag` e desmontavam o badge; e o pointer-events:none
+   dos mocks não pode valer pra tag (precisa ser clicável). */
+.mn-mock .mk-tag {
+  position: absolute;
+  top: 12px; right: -7px;
+  width: 22px; height: 22px;
+  flex: 0 0 auto;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--accent);
+  color: #1a0e06;
+  border: 0;
+  border-radius: 50%;
+  padding: 0;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1;
+  box-shadow: 0 0 0 2px #131318, 0 0 12px -2px var(--accent-glow);
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* réplica do mini-select "CC no LIVE" (inline-styled no app) */
+.mn-glivecc {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.mn-glivecc-cap {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.mn-glivecc-box {
+  width: 72px;
+  padding: 5px 6px;
+  border-radius: 8px;
+  border: 1px solid var(--hair-strong);
+  background: var(--card-2);
+  color: var(--text);
+  font-size: 13px;
+  text-align: center;
+}
+.mn-mock .bf-section-label:first-child { padding-top: 4px; }
+.mn-mock .mn-cell { position: relative; min-width: 0; }
+.mn-mock .bf-extras-row { margin-top: 2px; }
+/* Controles do mock são ilustrativos — sem interação/foco */
+.mn-mock .bf-input,
+.mn-mock .bf-color-bar,
+.mn-mock .bf-tap-action,
+.mn-mock .bf-select-btn { cursor: default; pointer-events: none; }
+.mn-mock .bf-tap-slot-actions { flex-wrap: wrap; }
+.mn-mock .mn-pill-cell { position: relative; display: inline-flex; }
+.mn-mock .bf-sw-fx1-led { min-height: 0; }
+.mn-mock-sw .bf-sw-card { margin-top: 4px; }
+.mn-mock-sw .bf-sw-card-tabs {
+  flex-direction: row;
+  align-items: center;
+  padding-right: 0;
+}
+.mn-mock-sw .bf-sw-card-iconrow { flex: 0 0 auto; }
+.mn-mock-sw .bf-sw-card-tabs > .bf-sw-mode-field {
+  flex: 1 1 auto;
+  width: auto;
+}
+.mn-mock-sw .bf-sw-card-body { min-height: 0; }
+.mn-mock-sw :is(button, .bf-input, .bf-select-btn) { pointer-events: none; }
+.mn-mock-sw .bf-sw-card-cp:disabled { opacity: 0.35; }
+.mn-mock-sw .bf-sw-mode-field {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent-glow), 0 8px 28px -16px var(--accent-glow);
+}
+.mn-mock-sw .bf-sw-mode-field-name { font-size: 18px; }
+.mn-mock-sw .bf-sw-fx1 { gap: 16px; }
+.mn-mock-sw .bf-sw-studio-title { font-size: 22px; }
+.mn-mock-sw .bf-fsw-arcs path {
+  filter: drop-shadow(0 0 4px var(--led-c, currentColor));
+}
+
+.mk-fader {
+  position: relative;
+  height: 42px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--hair);
+  background: linear-gradient(180deg, #1e1e23 0%, #141418 100%);
+  overflow: hidden;
+}
+.mk-fader::before {
+  content: "";
+  position: absolute;
+  left: 10px; right: 10px; top: 50%;
+  height: 4px;
+  transform: translateY(-50%);
+  border-radius: 4px;
+  background: var(--card-3);
+}
+.mk-fader .pt {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  border: 1px solid rgba(255,106,31,0.5);
+  color: var(--accent-2);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mk-tile {
+  width: 86px;
+  aspect-ratio: 1;
+  border-radius: var(--r-md);
+  border: 2px solid var(--danger);
+  background: #0a0a0d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--danger);
+}
+.mk-tile .glyph { font-size: 26px; line-height: 1; }
+.mk-tile .sig {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--text);
+}
+.mk-note {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--faint);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* Badge numerado (tag) — em cima do campo no mockup */
+.mk-tag {
+  position: absolute;
+  top: 12px;
+  right: -7px;
+  z-index: 3;
+  width: 22px; height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  color: #1a0e06;
+  border: 0;
+  border-radius: 50%;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 0 2px #131318, 0 0 12px -2px var(--accent-glow);
+  transition: transform 0.12s ease, box-shadow 0.2s ease;
+}
+.mk-tag:hover { transform: scale(1.12); box-shadow: 0 0 0 2px #131318, 0 0 16px var(--accent-glow); }
+.mn-cell:not(:has(.bf-field-label)) .mk-tag { top: -7px; }
+.mn-pill-cell .mk-tag { top: -10px; right: -8px; }
+
+/* Legenda numerada (explicação visível) */
+.mn-legend { display: flex; flex-direction: column; gap: 8px; }
+.mn-legend-item {
+  display: flex;
+  gap: 12px;
+  background: var(--card-2);
+  border: 1px solid var(--hair);
+  border-radius: var(--r-md);
+  padding: 12px 14px;
+  scroll-margin-top: calc(var(--topbar-h) + 14px);
+}
+.mn-legend-item.is-flash { animation: mn-flash 1.6s ease; }
+.mn-legend-item .mk-tag {
+  position: static;
+  flex: 0 0 auto;
+  margin-top: 1px;
+  cursor: default;
+  box-shadow: 0 0 10px -3px var(--accent-glow);
+}
+.mn-legend-item .mk-tag:hover { transform: none; }
+.mn-legend-item .body { min-width: 0; flex: 1; }
+.mn-legend-item .head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.mn-legend-item .name { font-size: 13.5px; font-weight: 600; }
+.mn-legend-item .type {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+  background: var(--card);
+  border: 1px solid var(--hair);
+  border-radius: var(--r-pill);
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+.mn-legend-item .desc {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+  margin-top: 4px;
+}
+.mn-legend-item .desc p { margin: 4px 0; }
+.mn-legend-item .desc strong { color: var(--text); }
+.mn-legend-item .desc .range {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--accent-2);
+  background: var(--accent-soft);
+  border-radius: var(--r-pill);
+  padding: 1px 8px;
+  margin: 1px 4px 1px 0;
+}
+
+@media (max-width: 560px) {
+  .mn-mock .bf-extras-row { grid-template-columns: 1fr 1fr !important; }
+  .mn-mock .bf-extras-row > .mn-cell { grid-column: auto !important; }
+}
+
+/* Navegação anterior / próxima */
+.mn-pager {
+  display: flex;
+  gap: 12px;
+  margin-top: 34px;
+}
+.mn-pager a {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--card);
+  border: 1px solid var(--hair);
+  border-radius: var(--r-lg);
+  padding: 14px 16px;
+  color: var(--text);
+  transition: border-color 0.15s ease, box-shadow 0.2s ease;
+}
+.mn-pager a:hover {
+  text-decoration: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent-glow);
+}
+.mn-pager .dir {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.mn-pager .lbl { font-size: 14px; font-weight: 600; }
+.mn-pager .next { text-align: right; align-items: flex-end; }
+
+/* ───────────────────────── Modal (i) ───────────────────────── */
+.mn-modal-backdrop[hidden],
+.mn-sidebar-backdrop[hidden],
+.mn-search-pop[hidden] { display: none; }
+.mn-modal-backdrop {
+  position: fixed; inset: 0;
+  z-index: 90;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+.mn-modal {
+  width: min(520px, 100%);
+  max-height: min(78vh, 640px);
+  overflow-y: auto;
+  background: linear-gradient(180deg, #1b1b20 0%, #131318 100%);
+  border: 1px solid var(--hair-strong);
+  border-radius: var(--r-xl);
+  box-shadow: 0 0 0 1px var(--accent-glow), 0 30px 80px -16px rgba(0,0,0,0.9);
+  padding: 18px 20px 22px;
+  animation: mn-modal-in 0.18s ease;
+}
+@keyframes mn-modal-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+.mn-modal-head {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 6px;
+}
+.mn-modal-crumb {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mn-modal-close {
+  margin-left: auto;
+  flex: 0 0 auto;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--card-2);
+  border: 1px solid var(--hair);
+  border-radius: 50%;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 13px;
+}
+.mn-modal-close:hover { color: var(--text); border-color: var(--hair-strong); }
+.mn-modal-title { margin: 2px 0 10px; font-size: 19px; letter-spacing: -0.01em; }
+.mn-modal-body { color: var(--muted); font-size: 14.5px; line-height: 1.65; }
+.mn-modal-body p { margin: 8px 0; }
+.mn-modal-body strong { color: var(--text); }
+.mn-modal-body .range {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-2);
+  background: var(--accent-soft);
+  border-radius: var(--r-pill);
+  padding: 2px 10px;
+  margin: 2px 6px 2px 0;
+}
+
+/* ───────────────────────── Responsivo ───────────────────────── */
+@media (max-width: 959px) {
+  .mn-burger { display: flex; }
+  .mn-sidebar {
+    position: fixed;
+    top: var(--topbar-h);
+    left: 0;
+    bottom: 0;
+    height: auto;
+    z-index: 50;
+    width: min(320px, 86vw);
+    background: rgba(12,12,16,0.98);
+    transform: translateX(-104%);
+    transition: transform 0.22s ease;
+    border-right: 1px solid var(--hair-strong);
+  }
+  .mn-sidebar.is-open { transform: none; }
+  body.is-theme-light .mn-sidebar { background: rgba(255,255,255,0.98); }
+  .mn-main { padding-top: 16px; }
+  .mn-brand-name { font-size: 14px; }
+}
+@media (max-width: 620px) {
+  /* libera espaço pra busca: ferramentas viram só ícones */
+  .mn-search-wrap { width: auto; flex: 1 1 auto; min-width: 0; }
+  .mn-tools { gap: 6px; }
+  .mn-lang-btn { padding: 0 10px; }
+}
+@media (max-width: 560px) {
+  .mn-brand-name { display: none; }
+  .mn-topbar { gap: 8px; padding: 0 12px; }
+  .mn-field { flex-wrap: wrap; }
+  .mn-field .type { order: 3; }
+  .mn-pager { flex-direction: column; }
+  .mn-pager .next { text-align: left; align-items: flex-start; }
+}
+
+/* Scrollbar discreta */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--card-3); border-radius: 8px; border: 2px solid var(--bg); }
+::-webkit-scrollbar-track { background: transparent; }
