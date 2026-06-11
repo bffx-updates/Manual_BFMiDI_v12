@@ -2384,6 +2384,52 @@
     </svg>`;
   }
 
+  // BFMIDI-2 4S — barra: SW1, display, LED, SW2, SW3, footswitch LIVE (no alto)
+  // e SW4, todos numa fileira. 4-switch + LIVE dedicado.
+  function mnHwTopSvg24s() {
+    return `
+    <svg viewBox="0 0 1010 270" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Vista superior do BFMIDI-2 4S: SW1, display, LED, SW2, SW3, footswitch LIVE e SW4 numa fileira">
+      <rect x="8" y="8" width="994" height="254" rx="9" fill="none" style="stroke:var(--accent)" stroke-width="2.6"/>
+      <rect x="150" y="45" width="150" height="110" rx="14" fill="none" style="stroke:var(--accent)" stroke-width="2.4"/>
+      <ellipse cx="400" cy="86" rx="13" ry="17" fill="none" style="stroke:var(--accent)" stroke-width="2.4"/>
+      ${mnHwFoot(80, 178, "sw1", 33, 16, 2.4)}
+      ${mnHwFoot(395, 178, "sw2", 33, 16, 2.4)}
+      ${mnHwFoot(650, 178, "sw3", 33, 16, 2.4)}
+      ${mnHwFoot(800, 95, "live", 33, 16, 2.4)}
+      ${mnHwFoot(940, 178, "sw4", 33, 16, 2.4)}
+    </svg>`;
+  }
+
+  // BFMIDI-2 4S — traseira: 4 portas (sem DIN5): MIDI TRS OUT · 9v · USB HOST ·
+  // USB DEVICE, rótulos num nível só (bem espaçados).
+  function mnHwRearSvg24s() {
+    const port = (x, arrowEnd, labelY, lines) => {
+      const arrow = `
+        <line x1="${x}" y1="106" x2="${x}" y2="${arrowEnd - 8}" style="stroke:var(--muted)" stroke-width="1.8"/>
+        <path d="M ${x} ${arrowEnd} l -6 -10 h 12 z" style="fill:var(--muted)"/>`;
+      const txt = lines.map((l, i) =>
+        `<text x="${x}" y="${labelY + i * 16}" text-anchor="middle" font-family="JetBrains Mono, ui-monospace, monospace" font-size="12" letter-spacing="0.8" style="fill:var(--text)">${l}</text>`
+      ).join("");
+      return arrow + txt;
+    };
+    return `
+    <svg viewBox="0 0 760 210" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Vista traseira do BFMIDI-2 4S: MIDI TRS OUT, alimentação 9v centro-negativo, USB HOST e USB DEVICE">
+      <rect x="10" y="14" width="740" height="92" rx="10" fill="none" style="stroke:var(--accent)" stroke-width="2.2"/>
+      <circle cx="60" cy="90" r="4" fill="none" style="stroke:var(--accent)" stroke-width="1.7"/>
+      <circle cx="700" cy="90" r="4" fill="none" style="stroke:var(--accent)" stroke-width="1.7"/>
+      <circle cx="200" cy="58" r="14" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      <rect x="291" y="44" width="28" height="28" rx="2" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      <rect x="423" y="49" width="44" height="18" rx="9" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      <rect x="583" y="49" width="44" height="18" rx="9" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      ${port(200, 150, 170, ["MIDI", "TRS OUT"])}
+      ${port(305, 150, 170, ["9v", "+(-)"])}
+      ${port(445, 150, 170, ["USB", "HOST"])}
+      ${port(605, 150, 170, ["USB", "DEVICE"])}
+    </svg>`;
+  }
+
   // Mapa modelo -> desenhos {top, rear}. startsWith cobre as variantes
   // (BFMIDI-1 7S_A1/_B1/_C1 compartilham o mesmo painel).
   function mnHwSvgsFor(modelId) {
@@ -2392,6 +2438,9 @@
     }
     if (modelId === "BFMIDI-1 4S") {
       return { top: mnHwTopSvg14s(), rear: mnHwRearSvg14s() };
+    }
+    if (modelId === "BFMIDI-2 4S") {
+      return { top: mnHwTopSvg24s(), rear: mnHwRearSvg24s() };
     }
     if (modelId === "BFMIDI-2 7S") {
       // Mesma vista superior 3x3 do 1 7S; traseira própria (5 portas).
