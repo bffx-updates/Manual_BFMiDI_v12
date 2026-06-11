@@ -2383,6 +2383,11 @@
     if (modelId === "BFMIDI-3 6SW+") {
       return { top: mnHwTopSvg36swplus(), rear: mnHwRearSvg36swplus() };
     }
+    if (modelId === "BFMIDI-3 MICRO") {
+      // Painel IDÊNTICO ao BFMIDI-2 MICRO; a única diferença é o USB Host Plus
+      // (interno — a porta desenhada "USB HOST" é a mesma). Reusa os 2 desenhos.
+      return { top: mnHwTopSvg2micro(), rear: mnHwRearSvg2micro() };
+    }
     return null;
   }
 
