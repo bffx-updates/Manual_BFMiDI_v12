@@ -2205,6 +2205,57 @@
     </svg>`;
   }
 
+  // BFMIDI-3 7S — 3x3: LIVE, display GRANDE e GLOBAL no topo; sw4-6 no meio;
+  // sw1-3 na base. Display maior (BFMIDI-3 = tela 480x320); sem LED separado.
+  function mnHwTopSvg37s() {
+    return `
+    <svg viewBox="0 0 470 375" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Vista superior do BFMIDI-3 7S: footswitch LIVE, display grande e footswitch GLOBAL no topo; SW4 SW5 SW6 no meio; SW1 SW2 SW3 na base">
+      <rect x="8" y="8" width="454" height="359" rx="10" fill="none" style="stroke:var(--accent)" stroke-width="1.9"/>
+      <rect x="150" y="38" width="170" height="120" rx="16" fill="none" style="stroke:var(--accent)" stroke-width="1.7"/>
+      ${mnHwFoot(72, 72, "live", 33, 16, 1.8)}
+      ${mnHwFoot(398, 72, "global", 33, 16, 1.8)}
+      ${mnHwFoot(72, 210, "sw4", 33, 16, 1.8)}
+      ${mnHwFoot(235, 210, "sw5", 33, 16, 1.8)}
+      ${mnHwFoot(398, 210, "sw6", 33, 16, 1.8)}
+      ${mnHwFoot(72, 315, "sw1", 33, 16, 1.8)}
+      ${mnHwFoot(235, 315, "sw2", 33, 16, 1.8)}
+      ${mnHwFoot(398, 315, "sw3", 33, 16, 1.8)}
+    </svg>`;
+  }
+
+  // BFMIDI-3 7S — traseira: 5 portas na ordem 9v · USB DEVICE · MIDI Din5 OUT
+  // (círculo grande) · MIDI TRS OUT (círculo menor) · USB HOST. Rótulos
+  // escalonados (TRS desce mais p/ não colidir com o Din5).
+  function mnHwRearSvg37s() {
+    const port = (x, arrowEnd, labelY, lines) => {
+      const arrow = `
+        <line x1="${x}" y1="106" x2="${x}" y2="${arrowEnd - 8}" style="stroke:var(--muted)" stroke-width="1.8"/>
+        <path d="M ${x} ${arrowEnd} l -6 -10 h 12 z" style="fill:var(--muted)"/>`;
+      const txt = lines.map((l, i) =>
+        `<text x="${x}" y="${labelY + i * 16}" text-anchor="middle" font-family="JetBrains Mono, ui-monospace, monospace" font-size="12" letter-spacing="0.8" style="fill:var(--text)">${l}</text>`
+      ).join("");
+      return arrow + txt;
+    };
+    return `
+    <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Vista traseira do BFMIDI-3 7S: alimentação 9v centro-negativo, USB DEVICE, MIDI DIN5 OUT, MIDI TRS OUT e USB HOST">
+      <rect x="10" y="14" width="680" height="92" rx="10" fill="none" style="stroke:var(--accent)" stroke-width="2.2"/>
+      <circle cx="70" cy="90" r="4" fill="none" style="stroke:var(--accent)" stroke-width="1.7"/>
+      <circle cx="630" cy="90" r="4" fill="none" style="stroke:var(--accent)" stroke-width="1.7"/>
+      <rect x="96" y="44" width="28" height="28" rx="2" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      <rect x="193" y="49" width="44" height="18" rx="9" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      <circle cx="380" cy="55" r="22" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      <circle cx="455" cy="58" r="15" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      <rect x="538" y="49" width="44" height="18" rx="9" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      ${port(110, 255, 275, ["9v", "+(-)"])}
+      ${port(215, 186, 206, ["USB", "DEVICE"])}
+      ${port(380, 186, 206, ["MIDI", "Din5", "OUT"])}
+      ${port(455, 270, 290, ["MIDI", "TRS OUT"])}
+      ${port(560, 221, 241, ["USB", "HOST"])}
+    </svg>`;
+  }
+
   // Mapa modelo -> desenhos {top, rear}. startsWith cobre as variantes
   // (BFMIDI-1 7S_A1/_B1/_C1 compartilham o mesmo painel).
   function mnHwSvgsFor(modelId) {
@@ -2229,6 +2280,9 @@
     }
     if (modelId === "BFMIDI-3 NANO") {
       return { top: mnHwTopSvg3nano(), rear: mnHwRearSvg3nano() };
+    }
+    if (modelId === "BFMIDI-3 7S") {
+      return { top: mnHwTopSvg37s(), rear: mnHwRearSvg37s() };
     }
     return null;
   }
