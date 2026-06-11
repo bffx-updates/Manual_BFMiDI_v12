@@ -2348,6 +2348,42 @@
     </svg>`;
   }
 
+  // BFMIDI-3 NANO+ — vista superior idêntica ao 3 NANO (reusa mnHwTopSvg3nano).
+  // Traseira = as 4 portas do 3 NANO (9v, USB DEVICE, MIDI TRS OUT, USB HOST)
+  // + EXP IN e DUAL SW IN como jacks LATERAIS (setas pra esquerda, padrão "+").
+  function mnHwRearSvg3nanoplus() {
+    const port = (x, arrowEnd, labelY, lines) => {
+      const arrow = `
+        <line x1="${x}" y1="106" x2="${x}" y2="${arrowEnd - 8}" style="stroke:var(--muted)" stroke-width="1.8"/>
+        <path d="M ${x} ${arrowEnd} l -6 -10 h 12 z" style="fill:var(--muted)"/>`;
+      const txt = lines.map((l, i) =>
+        `<text x="${x}" y="${labelY + i * 16}" text-anchor="middle" font-family="JetBrains Mono, ui-monospace, monospace" font-size="12" letter-spacing="0.8" style="fill:var(--text)">${l}</text>`
+      ).join("");
+      return arrow + txt;
+    };
+    const sideIn = (y, label) => `
+      <line x1="213" y1="${y}" x2="138" y2="${y}" style="stroke:var(--muted)" stroke-width="1.8"/>
+      <path d="M 130 ${y} l 10 -5 v 10 z" style="fill:var(--muted)"/>
+      <text x="122" y="${y + 4.5}" text-anchor="end" font-family="JetBrains Mono, ui-monospace, monospace" font-size="13" letter-spacing="0.8" style="fill:var(--text)">${label}</text>`;
+    return `
+    <svg viewBox="0 0 800 305" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Vista traseira do BFMIDI-3 NANO+: EXP IN e DUAL SW IN na lateral; 9v centro-negativo, USB DEVICE, MIDI TRS OUT e USB HOST">
+      <rect x="215" y="14" width="575" height="92" rx="10" fill="none" style="stroke:var(--accent)" stroke-width="2.2"/>
+      <circle cx="250" cy="90" r="4" fill="none" style="stroke:var(--accent)" stroke-width="1.7"/>
+      <circle cx="755" cy="90" r="4" fill="none" style="stroke:var(--accent)" stroke-width="1.7"/>
+      <rect x="306" y="44" width="28" height="28" rx="2" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      <rect x="398" y="49" width="44" height="18" rx="9" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      <circle cx="585" cy="58" r="14" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      <rect x="658" y="49" width="44" height="18" rx="9" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      ${sideIn(44, "EXP IN")}
+      ${sideIn(66, "DUAL SW IN")}
+      ${port(320, 255, 275, ["9v", "+(-)"])}
+      ${port(420, 186, 206, ["USB", "DEVICE"])}
+      ${port(585, 186, 206, ["MIDI", "TRS OUT"])}
+      ${port(680, 221, 241, ["USB", "HOST"])}
+    </svg>`;
+  }
+
   // Mapa modelo -> desenhos {top, rear}. startsWith cobre as variantes
   // (BFMIDI-1 7S_A1/_B1/_C1 compartilham o mesmo painel).
   function mnHwSvgsFor(modelId) {
@@ -2387,6 +2423,10 @@
       // Painel IDÊNTICO ao BFMIDI-2 MICRO; a única diferença é o USB Host Plus
       // (interno — a porta desenhada "USB HOST" é a mesma). Reusa os 2 desenhos.
       return { top: mnHwTopSvg2micro(), rear: mnHwRearSvg2micro() };
+    }
+    if (modelId === "BFMIDI-3 NANO+") {
+      // Mesmo topo do 3 NANO; traseira ganha EXP IN + DUAL SW IN (lateral).
+      return { top: mnHwTopSvg3nano(), rear: mnHwRearSvg3nanoplus() };
     }
     return null;
   }
