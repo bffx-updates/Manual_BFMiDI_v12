@@ -901,6 +901,16 @@ body.is-theme-light .mn-page-switch {
   text-transform: uppercase;
   color: var(--faint);
 }
+/* Desenho REAL de hardware (substitui o placeholder quando o modelo
+   selecionado já tem SVG — ver mnHwSvgsFor em manual.js). */
+.mn-hw-svg {
+  border: 1px solid var(--hair);
+  border-radius: var(--r-md);
+  background: var(--card);
+  padding: 10px;
+}
+.mn-hw-svg svg { display: block; width: 100%; height: auto; }
+
 .mn-svg-placeholder {
   position: relative;
   display: grid;

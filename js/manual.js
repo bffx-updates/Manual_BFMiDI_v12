@@ -1887,18 +1887,84 @@
   const MN_CONNECTION_FAMILIES = ["BFMIDI-1", "BFMIDI-2", "BFMIDI-3"];
   let mnConnectionsModel = "BFMIDI-3 7S";
 
+  /* ─────────── Desenhos de hardware por modelo (seção Hardware) ───────────
+     SVGs das vistas superior/traseira, fieis aos desenhos de referencia.
+     Cores via style="" (var() nao funciona em atributo SVG). Modelos ainda
+     sem desenho caem no placeholder "SVG entra aqui". */
+  function mnHwFoot(cx, cy, label) {
+    return `
+      <circle cx="${cx}" cy="${cy}" r="22" fill="none" style="stroke:var(--accent)" stroke-width="1.6"/>
+      <text x="${cx}" y="${cy + 3.5}" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" style="fill:var(--text)">${label}</text>`;
+  }
+
+  // BFMIDI-1 7S — vista superior: live/display/LED/global no topo,
+  // SW4-6 no meio, SW1-3 na base.
+  function mnHwTopSvg17s() {
+    return `
+    <svg viewBox="0 0 450 340" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Vista superior do BFMIDI-1 7S: footswitch LIVE, display e footswitch GLOBAL no topo; SW4, SW5 e SW6 no meio; SW1, SW2 e SW3 na base">
+      <rect x="10" y="10" width="430" height="320" rx="10" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      ${mnHwFoot(75, 65, "live")}
+      <rect x="135" y="42" width="110" height="80" rx="9" fill="none" style="stroke:var(--accent)" stroke-width="1.6"/>
+      <ellipse cx="297" cy="86" rx="10" ry="13" fill="none" style="stroke:var(--accent)" stroke-width="1.6"/>
+      ${mnHwFoot(375, 65, "global")}
+      ${mnHwFoot(75, 175, "sw4")}
+      ${mnHwFoot(225, 175, "sw5")}
+      ${mnHwFoot(375, 175, "sw6")}
+      ${mnHwFoot(75, 285, "sw1")}
+      ${mnHwFoot(225, 285, "sw2")}
+      ${mnHwFoot(375, 285, "sw3")}
+    </svg>`;
+  }
+
+  // BFMIDI-1 7S — vista traseira: MIDI TRS OUT, 9v e USB DEVICE, com setas
+  // e os 2 furos de parafuso.
+  function mnHwRearSvg17s() {
+    const arrow = (x) => `
+      <line x1="${x}" y1="104" x2="${x}" y2="132" style="stroke:var(--muted)" stroke-width="1.6"/>
+      <path d="M ${x} 140 l -5 -9 h 10 z" style="fill:var(--muted)"/>`;
+    const lbl = (x, l1, l2) => `
+      <text x="${x}" y="158" text-anchor="middle" font-family="JetBrains Mono, ui-monospace, monospace" font-size="10.5" letter-spacing="0.8" style="fill:var(--text)">${l1}</text>
+      <text x="${x}" y="173" text-anchor="middle" font-family="JetBrains Mono, ui-monospace, monospace" font-size="10.5" letter-spacing="0.8" style="fill:var(--text)">${l2}</text>`;
+    return `
+    <svg viewBox="0 0 450 190" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Vista traseira do BFMIDI-1 7S: saída MIDI TRS OUT, alimentação 9v centro-negativo e porta USB DEVICE">
+      <rect x="10" y="14" width="430" height="86" rx="9" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      <circle cx="32" cy="82" r="3.2" fill="none" style="stroke:var(--accent)" stroke-width="1.4"/>
+      <circle cx="418" cy="82" r="3.2" fill="none" style="stroke:var(--accent)" stroke-width="1.4"/>
+      <circle cx="125" cy="52" r="14" fill="none" style="stroke:var(--accent)" stroke-width="1.6"/>
+      <rect x="211" y="39" width="26" height="26" rx="2" fill="none" style="stroke:var(--accent)" stroke-width="1.6"/>
+      <rect x="285" y="46" width="36" height="15" rx="7.5" fill="none" style="stroke:var(--accent)" stroke-width="1.6"/>
+      ${arrow(125)}${arrow(224)}${arrow(303)}
+      ${lbl(125, "MIDI", "TRS OUT")}
+      ${lbl(224, "9v", "+(-)")}
+      ${lbl(303, "USB", "DEVICE")}
+    </svg>`;
+  }
+
+  // Mapa modelo -> desenhos {top, rear}. startsWith cobre as variantes
+  // (BFMIDI-1 7S_A1/_B1/_C1 compartilham o mesmo painel).
+  function mnHwSvgsFor(modelId) {
+    if (modelId.indexOf("BFMIDI-1 7S") === 0) {
+      return { top: mnHwTopSvg17s(), rear: mnHwRearSvg17s() };
+    }
+    return null;
+  }
+
   function renderConnectionsHardwareMock(card, secIdx, cardIdx) {
     const tag = mockTagFactory(card, secIdx, cardIdx);
     const current = MN_CONNECTION_MODELS.find((m) => m.id === mnConnectionsModel) || MN_CONNECTION_MODELS[13];
     const family = current.tag;
     const variants = MN_CONNECTION_MODELS.filter((m) => m.tag === family);
-    const svgSlot = (key, title, sub) => `
+    const hwSvgs = mnHwSvgsFor(current.id);
+    const svgSlot = (key, title, sub, svgHtml) => `
       <div class="mn-svg-slot mn-cell">
         ${tag(key)}
         <div class="mn-svg-slot-head">
           <span>${esc(title)}</span>
           <small>${esc(sub)}</small>
         </div>
+        ${svgHtml ? `<div class="mn-hw-svg">${svgHtml}</div>` : `
         <div class="mn-svg-placeholder" aria-label="${esc(title)}">
           <svg viewBox="0 0 320 150" role="img" aria-hidden="true">
             <rect x="18" y="18" width="284" height="114" rx="14"></rect>
@@ -1907,7 +1973,7 @@
             <circle cx="248" cy="112" r="9"></circle>
           </svg>
           <span>SVG entra aqui</span>
-        </div>
+        </div>`}
       </div>`;
 
     return `<div class="mn-block-label">${esc(t("previewReal"))}</div>
@@ -1948,8 +2014,8 @@
               }).join("")}
             </div>
             <div class="mn-svg-grid">
-              ${svgSlot("vista1", "Vista superior/frontal", "desenho SVG do hardware")}
-              ${svgSlot("vista2", "Vista traseira/conectores", "desenho SVG das portas")}
+              ${svgSlot("vista1", "Vista superior/frontal", "desenho SVG do hardware", hwSvgs && hwSvgs.top)}
+              ${svgSlot("vista2", "Vista traseira/conectores", "desenho SVG das portas", hwSvgs && hwSvgs.rear)}
             </div>
           </div>
         </div>
