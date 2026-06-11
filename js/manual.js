@@ -1891,10 +1891,11 @@
      SVGs das vistas superior/traseira, fieis aos desenhos de referencia.
      Cores via style="" (var() nao funciona em atributo SVG). Modelos ainda
      sem desenho caem no placeholder "SVG entra aqui". */
-  function mnHwFoot(cx, cy, label) {
+  function mnHwFoot(cx, cy, label, r, fontPx, strokeW) {
+    r = r || 22; fontPx = fontPx || 11; strokeW = strokeW || 1.6;
     return `
-      <circle cx="${cx}" cy="${cy}" r="22" fill="none" style="stroke:var(--accent)" stroke-width="1.6"/>
-      <text x="${cx}" y="${cy + 3.5}" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" style="fill:var(--text)">${label}</text>`;
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" style="stroke:var(--accent)" stroke-width="${strokeW}"/>
+      <text x="${cx}" y="${cy + fontPx * 0.32}" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="${fontPx}" style="fill:var(--text)">${label}</text>`;
   }
 
   // BFMIDI-1 7S — vista superior: live/display/LED/global no topo,
@@ -1942,11 +1943,56 @@
     </svg>`;
   }
 
+  // BFMIDI-1 4S — formato barra (1x4): display + LED + LIVE/GLOBAL no topo,
+  // SW1..SW4 na base. viewBox largo (930) -> fontes/raios maiores que o 7S
+  // pra compensar a escala menor de render.
+  function mnHwTopSvg14s() {
+    return `
+    <svg viewBox="0 0 930 200" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Vista superior do BFMIDI-1 4S: display, LED, footswitches LIVE e GLOBAL no topo; SW1 a SW4 na base">
+      <rect x="8" y="8" width="914" height="184" rx="9" fill="none" style="stroke:var(--accent)" stroke-width="2.6"/>
+      <rect x="140" y="42" width="130" height="108" rx="12" fill="none" style="stroke:var(--accent)" stroke-width="2.4"/>
+      <ellipse cx="380" cy="60" rx="13" ry="17" fill="none" style="stroke:var(--accent)" stroke-width="2.4"/>
+      ${mnHwFoot(470, 57, "live", 28, 17, 2.4)}
+      ${mnHwFoot(737, 57, "global", 28, 17, 2.4)}
+      ${mnHwFoot(72, 131, "sw1", 28, 17, 2.4)}
+      ${mnHwFoot(342, 131, "sw2", 28, 17, 2.4)}
+      ${mnHwFoot(607, 131, "sw3", 28, 17, 2.4)}
+      ${mnHwFoot(858, 131, "sw4", 28, 17, 2.4)}
+    </svg>`;
+  }
+
+  function mnHwRearSvg14s() {
+    const arrow = (x) => `
+      <line x1="${x}" y1="116" x2="${x}" y2="148" style="stroke:var(--muted)" stroke-width="2.4"/>
+      <path d="M ${x} 158 l -7 -12 h 14 z" style="fill:var(--muted)"/>`;
+    const lbl = (x, l1, l2) => `
+      <text x="${x}" y="178" text-anchor="middle" font-family="JetBrains Mono, ui-monospace, monospace" font-size="17" letter-spacing="0.8" style="fill:var(--text)">${l1}</text>
+      <text x="${x}" y="198" text-anchor="middle" font-family="JetBrains Mono, ui-monospace, monospace" font-size="17" letter-spacing="0.8" style="fill:var(--text)">${l2}</text>`;
+    return `
+    <svg viewBox="0 0 930 215" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Vista traseira do BFMIDI-1 4S: saída MIDI TRS OUT, alimentação 9v centro-negativo e porta USB DEVICE">
+      <rect x="8" y="12" width="914" height="98" rx="10" fill="none" style="stroke:var(--accent)" stroke-width="2.6"/>
+      <circle cx="80" cy="90" r="4.5" fill="none" style="stroke:var(--accent)" stroke-width="2"/>
+      <circle cx="850" cy="90" r="4.5" fill="none" style="stroke:var(--accent)" stroke-width="2"/>
+      <circle cx="280" cy="50" r="18" fill="none" style="stroke:var(--accent)" stroke-width="2.4"/>
+      <rect x="395" y="32" width="34" height="34" rx="2" fill="none" style="stroke:var(--accent)" stroke-width="2.4"/>
+      <rect x="733" y="56" width="48" height="20" rx="10" fill="none" style="stroke:var(--accent)" stroke-width="2.4"/>
+      ${arrow(280)}${arrow(412)}${arrow(757)}
+      ${lbl(280, "MIDI", "TRS OUT")}
+      ${lbl(412, "9v", "+(-)")}
+      ${lbl(757, "USB", "DEVICE")}
+    </svg>`;
+  }
+
   // Mapa modelo -> desenhos {top, rear}. startsWith cobre as variantes
   // (BFMIDI-1 7S_A1/_B1/_C1 compartilham o mesmo painel).
   function mnHwSvgsFor(modelId) {
     if (modelId.indexOf("BFMIDI-1 7S") === 0) {
       return { top: mnHwTopSvg17s(), rear: mnHwRearSvg17s() };
+    }
+    if (modelId === "BFMIDI-1 4S") {
+      return { top: mnHwTopSvg14s(), rear: mnHwRearSvg14s() };
     }
     return null;
   }
