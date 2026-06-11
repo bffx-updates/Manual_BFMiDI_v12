@@ -70,7 +70,41 @@
       langTitle: "Idioma",
       langAria: "Trocar idioma",
       pageBasics: "Primeiros Passos",
-      pageFull: "Manual Completo"
+      pageFull: "Manual Completo",
+      // ── Narração dos fluxos ilustrados (acesso-flow / preset-flow) ──
+      accS1t: "ABRA O WIFI DO CELULAR",
+      accS1s: "Ajustes › Wi-Fi — a rede do pedal aparece na lista",
+      accTap: "TOQUE EM “BFMIDI_WIFI”",
+      accConnect: "CONECTAR",
+      accS2t: "DIGITE A SENHA",
+      accS2s: "A senha é fixa, igual para todos os pedais",
+      accPw: "SENHA",
+      accNoNet: "“Sem internet”? Normal — continue conectado.",
+      accS3t: "ABRA O NAVEGADOR",
+      accS3s: "Chrome, Safari ou Edge — digite o endereço e confirme",
+      accOnlyNums: "Só números e pontos — sem “www”.",
+      accS4t: "PRONTO — O EDITOR ABRE",
+      accS4s: "Sem instalar nada: o app roda dentro do pedal",
+      accEdit: "Edite presets, cores e tudo mais por aqui.",
+      accSummary: "REDE: BFMIDI_WIFI · SENHA: bfmidi@editor · ENDEREÇO: 192.168.4.1",
+      ppS1t: "ESCOLHA UM PRESET NO APP",
+      ppS1s: "Página PRESET — banco A, toque no botão 1 (ele fica laranja)",
+      ppS2t: "DIGA QUAL SOM CARREGAR",
+      ppS2s: "Card PRINCIPAL — PC = o som da pedaleira · canal = qual aparelho (na dúvida, 1)",
+      ppS3t: "TOQUE EM SAVE",
+      ppS3s: "Nada é gravado até salvar — fica na barra de baixo",
+      ppS4t: "PISE E TESTE",
+      ppS4s: "Pisou no footswitch 1 → a pedaleira pula pro som escolhido",
+      ppHintSave: "Esqueceu o SAVE? A mudança se perde.",
+      ppHintTest: "Não trocou? Confira o canal MIDI e o cabo BFMiDi → pedaleira.",
+      ppSummary: "PRESET = ATALHO · PC = O SOM · SAVE GRAVA · PISOU, TROCOU",
+      ppCtrl: "CONTROLADORA · BFMiDi",
+      ppUnit: "PEDALEIRA (ex.: AMPERO)",
+      ppLoaded: "SOM CARREGADO",
+      ppSong: "Música 1",
+      ppBank: "MEU SET",
+      hwFamily: "FAMÍLIA",
+      hwVariant: "VARIANTE"
     },
     en: {
       home: "Home",
@@ -110,7 +144,40 @@
       langTitle: "Language",
       langAria: "Switch language",
       pageBasics: "Getting Started",
-      pageFull: "Full Manual"
+      pageFull: "Full Manual",
+      accS1t: "OPEN YOUR PHONE'S WIFI",
+      accS1s: "Settings › Wi-Fi — the pedal's network shows up in the list",
+      accTap: "TAP “BFMIDI_WIFI”",
+      accConnect: "CONNECT",
+      accS2t: "TYPE THE PASSWORD",
+      accS2s: "The password is fixed, the same for every pedal",
+      accPw: "PASSWORD",
+      accNoNet: "“No internet”? That's normal — stay connected.",
+      accS3t: "OPEN THE BROWSER",
+      accS3s: "Chrome, Safari or Edge — type the address and confirm",
+      accOnlyNums: "Just numbers and dots — no “www”.",
+      accS4t: "DONE — THE EDITOR OPENS",
+      accS4s: "Nothing to install: the app runs inside the pedal",
+      accEdit: "Edit presets, colors and everything else here.",
+      accSummary: "NETWORK: BFMIDI_WIFI · PASSWORD: bfmidi@editor · ADDRESS: 192.168.4.1",
+      ppS1t: "CHOOSE A PRESET IN THE APP",
+      ppS1s: "PRESET page — bank A, tap button 1 (it turns orange)",
+      ppS2t: "TELL IT WHICH SOUND TO LOAD",
+      ppS2s: "MAIN card — PC = the effects unit's sound · channel = which device (when in doubt, 1)",
+      ppS3t: "TAP SAVE",
+      ppS3s: "Nothing is stored until you save — it's on the bottom bar",
+      ppS4t: "STEP ON IT AND TEST",
+      ppS4s: "Stepped on footswitch 1 → the effects unit jumps to the chosen sound",
+      ppHintSave: "Forgot to SAVE? The change is lost.",
+      ppHintTest: "Didn't switch? Check the MIDI channel and the BFMiDi → effects unit cable.",
+      ppSummary: "PRESET = SHORTCUT · PC = THE SOUND · SAVE STORES · STEP, SWITCH",
+      ppCtrl: "CONTROLLER · BFMiDi",
+      ppUnit: "EFFECTS UNIT (e.g. AMPERO)",
+      ppLoaded: "SOUND LOADED",
+      ppSong: "Song 1",
+      ppBank: "MY SET",
+      hwFamily: "FAMILY",
+      hwVariant: "VARIANT"
     },
     es: {
       home: "Inicio",
@@ -150,7 +217,40 @@
       langTitle: "Idioma",
       langAria: "Cambiar idioma",
       pageBasics: "Primeros Pasos",
-      pageFull: "Manual Completo"
+      pageFull: "Manual Completo",
+      accS1t: "ABRE EL WIFI DEL CELULAR",
+      accS1s: "Ajustes › Wi-Fi — la red del pedal aparece en la lista",
+      accTap: "TOCA “BFMIDI_WIFI”",
+      accConnect: "CONECTAR",
+      accS2t: "ESCRIBE LA CONTRASEÑA",
+      accS2s: "La contraseña es fija, igual para todos los pedales",
+      accPw: "CONTRASEÑA",
+      accNoNet: "¿“Sin internet”? Es normal — permanece conectado.",
+      accS3t: "ABRE EL NAVEGADOR",
+      accS3s: "Chrome, Safari o Edge — escribe la dirección y confirma",
+      accOnlyNums: "Solo números y puntos — sin “www”.",
+      accS4t: "LISTO — EL EDITOR ABRE",
+      accS4s: "Sin instalar nada: la app corre dentro del pedal",
+      accEdit: "Edita presets, colores y todo lo demás aquí.",
+      accSummary: "RED: BFMIDI_WIFI · CONTRASEÑA: bfmidi@editor · DIRECCIÓN: 192.168.4.1",
+      ppS1t: "ELIGE UN PRESET EN LA APP",
+      ppS1s: "Página PRESET — banco A, toca el botón 1 (se pone naranja)",
+      ppS2t: "DI QUÉ SONIDO CARGAR",
+      ppS2s: "Tarjeta PRINCIPAL — PC = el sonido de la pedalera · canal = qué aparato (en caso de duda, 1)",
+      ppS3t: "TOCA SAVE",
+      ppS3s: "Nada se graba hasta guardar — está en la barra de abajo",
+      ppS4t: "PISA Y PRUEBA",
+      ppS4s: "Pisaste el footswitch 1 → la pedalera salta al sonido elegido",
+      ppHintSave: "¿Olvidaste GUARDAR? El cambio se pierde.",
+      ppHintTest: "¿No cambió? Revisa el canal MIDI y el cable BFMiDi → pedalera.",
+      ppSummary: "PRESET = ATAJO · PC = EL SONIDO · SAVE GRABA · PISAS, CAMBIA",
+      ppCtrl: "CONTROLADORA · BFMiDi",
+      ppUnit: "PEDALERA (ej.: AMPERO)",
+      ppLoaded: "SONIDO CARGADO",
+      ppSong: "Canción 1",
+      ppBank: "MI SET",
+      hwFamily: "FAMILIA",
+      hwVariant: "VARIANTE"
     }
   };
   let mnLang = (localStorage.getItem("mn-lang") || "").toLowerCase();
@@ -586,7 +686,7 @@
       </defs>
 
       <!-- PASSO 1: abrir o WiFi do celular e tocar na rede do pedal -->
-      ${step(1, 36, "ABRA O WIFI DO CELULAR", "Ajustes › Wi-Fi — a rede do pedal aparece na lista")}
+      ${step(1, 36, t("accS1t"), t("accS1s"))}
       ${phone(px, p1y, pw, p1h)}
       <text x="${px + 22}" y="${p1y + 44}" ${sysf} font-size="13" font-weight="800" style="fill:var(--text)">Wi-Fi</text>
       <rect x="${px + pw - 52}" y="${p1y + 32}" width="30" height="16" rx="8" fill="#30d158"/>
@@ -595,39 +695,39 @@
       ${netRow(px + 20, p1y + 98, pw - 40, "BFMIDI_WIFI", true)}
       ${netRow(px + 20, p1y + 136, pw - 40, "Vizinho_5G", false)}
       ${tap(px + pw - 58, p1y + 113)}
-      <text x="280" y="${p1y + p1h - 14}" ${mono} font-size="9" letter-spacing="1" text-anchor="middle" style="fill:var(--accent)">TOQUE EM “BFMIDI_WIFI”</text>
+      <text x="280" y="${p1y + p1h - 14}" ${mono} font-size="9" letter-spacing="1" text-anchor="middle" style="fill:var(--accent)">${t("accTap")}</text>
 
       ${downArrow(p1y + p1h + 14, p2y - 14, "")}
 
       <!-- PASSO 2: digitar a senha -->
-      ${step(2, p2y - 28, "DIGITE A SENHA", "A senha é fixa, igual para todos os pedais")}
+      ${step(2, p2y - 28, t("accS2t"), t("accS2s"))}
       ${phone(px, p2y, pw, p2h)}
       <text x="${px + pw / 2}" y="${p2y + 46}" ${sysf} font-size="12.5" font-weight="800" text-anchor="middle" style="fill:var(--text)">BFMIDI_WIFI</text>
-      <text x="${px + 22}" y="${p2y + 72}" ${mono} font-size="8" letter-spacing="1.2" style="fill:var(--faint)">SENHA</text>
+      <text x="${px + 22}" y="${p2y + 72}" ${mono} font-size="8" letter-spacing="1.2" style="fill:var(--faint)">${t("accPw")}</text>
       <rect x="${px + 20}" y="${p2y + 80}" width="${pw - 40}" height="34" rx="9" style="fill:var(--card-2);stroke:#ff6a1f;stroke-width:1.6"/>
       <text x="${px + 32}" y="${p2y + 102}" ${mono} font-size="12.5" font-weight="700" style="fill:var(--accent)">bfmidi@editor</text>
       <rect x="${px + 20}" y="${p2y + 128}" width="${pw - 40}" height="32" rx="9" fill="#ff6a1f"/>
-      <text x="${px + pw / 2}" y="${p2y + 148}" ${mono} font-size="11" font-weight="800" letter-spacing="1.5" text-anchor="middle" fill="#16161a">CONECTAR</text>
+      <text x="${px + pw / 2}" y="${p2y + 148}" ${mono} font-size="11" font-weight="800" letter-spacing="1.5" text-anchor="middle" fill="#16161a">${t("accConnect")}</text>
       ${tap(px + pw - 48, p2y + 144)}
-      <text x="280" y="${p2y + p2h - 12}" ${sysf} font-size="9.5" text-anchor="middle" style="fill:var(--muted)">“Sem internet”? Normal — continue conectado.</text>
+      <text x="280" y="${p2y + p2h - 12}" ${sysf} font-size="9.5" text-anchor="middle" style="fill:var(--muted)">${t("accNoNet")}</text>
 
       ${downArrow(p2y + p2h + 14, p3y - 14, "")}
 
       <!-- PASSO 3: abrir o navegador e digitar o endereço -->
-      ${step(3, p3y - 28, "ABRA O NAVEGADOR", "Chrome, Safari ou Edge — digite o endereço e confirme")}
+      ${step(3, p3y - 28, t("accS3t"), t("accS3s"))}
       ${phone(px, p3y, pw, p3h)}
       <rect x="${px + 18}" y="${p3y + 34}" width="${pw - 36}" height="34" rx="17" style="fill:var(--card-2);stroke:#ff6a1f;stroke-width:1.8"/>
       <circle cx="${px + 36}" cy="${p3y + 51}" r="7" fill="none" style="stroke:var(--faint)" stroke-width="1.5"/>
       <path d="M ${px + 29} ${p3y + 51} h 14 M ${px + 36} ${p3y + 44} a 10 10 0 0 1 0 14 M ${px + 36} ${p3y + 44} a 10 10 0 0 0 0 14" style="stroke:var(--faint)" stroke-width="1.1" fill="none"/>
       <text x="${px + 52}" y="${p3y + 56}" ${mono} font-size="13.5" font-weight="800" style="fill:var(--accent)">192.168.4.1<tspan fill="#ff6a1f"><animate attributeName="opacity" values="1;0;1" dur="1.1s" repeatCount="indefinite"/>|</tspan></text>
-      <text x="${px + pw / 2}" y="${p3y + 96}" ${sysf} font-size="9.5" text-anchor="middle" style="fill:var(--muted)">Só números e pontos — sem “www”.</text>
+      <text x="${px + pw / 2}" y="${p3y + 96}" ${sysf} font-size="9.5" text-anchor="middle" style="fill:var(--muted)">${t("accOnlyNums")}</text>
       ${[0, 1, 2].map((r) => `<rect x="${px + 22}" y="${p3y + 116 + r * 20}" width="${pw - 44}" height="13" rx="4" style="fill:var(--mock-phone-key)"/>`).join("")}
       ${tap(px + pw / 2, p3y + 142)}
 
       ${downArrow(p3y + p3h + 14, p4y - 14, "")}
 
       <!-- PASSO 4: o editor abre -->
-      ${step(4, p4y - 28, "PRONTO — O EDITOR ABRE", "Sem instalar nada: o app roda dentro do pedal")}
+      ${step(4, p4y - 28, t("accS4t"), t("accS4s"))}
       ${phone(px, p4y, pw, p4h)}
       <rect x="${px + 18}" y="${p4y + 32}" width="${pw - 36}" height="22" rx="7" style="fill:var(--card-2);stroke:var(--hair-strong);stroke-width:1"/>
       <text x="${px + pw / 2}" y="${p4y + 47}" ${mono} font-size="9.5" font-weight="800" letter-spacing="2" text-anchor="middle" style="fill:var(--accent)">BFMiDi · EDITOR</text>
@@ -640,9 +740,9 @@
             style="fill:var(--card-2);stroke:${i === 0 ? "#ff6a1f" : "var(--hair-strong)"};stroke-width:${i === 0 ? 1.8 : 1.1}"/>
           <text x="${tx + tw / 2}" y="${ty + 28}" ${mono} font-size="10" font-weight="800" text-anchor="middle" style="fill:${i === 0 ? "var(--accent)" : "var(--faint)"}">${i + 1}</text>`;
       }).join("")}
-      <text x="${px + pw / 2}" y="${p4y + p4h - 16}" ${sysf} font-size="9.5" text-anchor="middle" style="fill:var(--muted)">Edite presets, cores e tudo mais por aqui.</text>
+      <text x="${px + pw / 2}" y="${p4y + p4h - 16}" ${sysf} font-size="9.5" text-anchor="middle" style="fill:var(--muted)">${t("accEdit")}</text>
 
-      <text x="280" y="${total - 12}" ${mono} font-size="9.5" letter-spacing="0.8" text-anchor="middle" style="fill:var(--muted)">REDE: BFMIDI_WIFI · SENHA: bfmidi@editor · ENDEREÇO: 192.168.4.1</text>
+      <text x="280" y="${total - 12}" ${mono} font-size="9.5" letter-spacing="0.8" text-anchor="middle" style="fill:var(--muted)">${t("accSummary")}</text>
     </svg>`;
 
     return `<div class="mn-block-label">${esc(t("previewReal"))}</div>
@@ -730,7 +830,7 @@
         <button type="button" class="bf-bank-tile" tabindex="-1">
           <span class="led"></span>
           <span class="letter">A</span>
-          <span class="bf-bank-name">MEU SET</span>
+          <span class="bf-bank-name">${esc(t("ppBank"))}</span>
         </button>
         ${presetBtn(1, true)}${presetBtn(2, false)}${presetBtn(3, false)}${presetBtn(4, false)}${presetBtn(5, false)}${presetBtn(6, false)}
       </div>`;
@@ -742,7 +842,7 @@
         <div class="bf-studio-np-title-row bf-studio-np-title-row-accent">
           <span class="bf-studio-np-accent-bar" aria-hidden="true"></span>
           <div class="bf-studio-np-title-wrap">
-            <h2 class="bf-studio-np-title">Música 1</h2>
+            <h2 class="bf-studio-np-title">${esc(t("ppSong"))}</h2>
           </div>
         </div>
         <div class="bf-studio-np-meta">
@@ -775,20 +875,20 @@
       </defs>
 
       <!-- PASSO 3: salvar -->
-      ${step(3, 36, "TOQUE EM SAVE", "Nada é gravado até salvar — fica na barra de baixo")}
+      ${step(3, 36, t("ppS3t"), t("ppS3s"))}
       ${phone(px, p3y, pw, p3h)}
       ${[0, 1].map((i) => `<rect x="${px + 22 + i * 52}" y="${p3y + 44}" width="42" height="30" rx="8" style="fill:var(--card-2);stroke:var(--hair-strong);stroke-width:1"/>`).join("")}
       <rect x="${px + pw - 96}" y="${p3y + 40}" width="74" height="38" rx="10" fill="#ff6a1f"/>
       <text x="${px + pw - 59}" y="${p3y + 64}" ${mono} font-size="11.5" font-weight="800" letter-spacing="1.5" text-anchor="middle" fill="#16161a">SAVE</text>
       ${tap(px + pw - 40, p3y + 72)}
-      <text x="${px + pw / 2}" y="${p3y + p3h - 16}" ${sysf} font-size="9.5" text-anchor="middle" style="fill:var(--muted)">Esqueceu o SAVE? A mudança se perde.</text>
+      <text x="${px + pw / 2}" y="${p3y + p3h - 16}" ${sysf} font-size="9.5" text-anchor="middle" style="fill:var(--muted)">${t("ppHintSave")}</text>
 
       ${downArrow(p3y + p3h + 14, p4y - 14, "")}
 
       <!-- PASSO 4: pisar no footswitch -> pedaleira troca o som -->
-      ${step(4, p4y - 28, "PISE E TESTE", "Pisou no footswitch 1 → a pedaleira pula pro som escolhido")}
+      ${step(4, p4y - 28, t("ppS4t"), t("ppS4s"))}
       <rect x="44" y="${p4y}" width="216" height="${p4h - 40}" rx="14" style="fill:var(--card);stroke:var(--hair-strong);stroke-width:1.4"/>
-      <text x="152" y="${p4y + 22}" ${mono} font-size="8.5" letter-spacing="1.5" text-anchor="middle" style="fill:var(--faint)">CONTROLADORA · BFMiDi</text>
+      <text x="152" y="${p4y + 22}" ${mono} font-size="8.5" letter-spacing="1.5" text-anchor="middle" style="fill:var(--faint)">${t("ppCtrl")}</text>
       ${[0, 1, 2, 3, 4, 5].map((i) => {
         const col = i % 3, row = (i / 3) | 0;
         const cx = 92 + col * 60;
@@ -806,22 +906,22 @@
         <text x="292" y="${p4y + 60}" ${mono} font-size="8" letter-spacing="1" text-anchor="middle" fill="#ff8a3a">MIDI</text>
       </g>
       <rect x="326" y="${p4y}" width="190" height="${p4h - 40}" rx="14" style="fill:var(--card);stroke:var(--hair-strong);stroke-width:1.4"/>
-      <text x="421" y="${p4y + 22}" ${mono} font-size="8.5" letter-spacing="1.5" text-anchor="middle" style="fill:var(--faint)">PEDALEIRA (ex.: AMPERO)</text>
+      <text x="421" y="${p4y + 22}" ${mono} font-size="8.5" letter-spacing="1.5" text-anchor="middle" style="fill:var(--faint)">${t("ppUnit")}</text>
       <rect x="344" y="${p4y + 36}" width="154" height="62" rx="9" fill="#0b0b0e" stroke="rgba(255,106,31,0.5)" stroke-width="1.4"/>
-      <text x="421" y="${p4y + 56}" ${mono} font-size="8" letter-spacing="1.5" text-anchor="middle" fill="#8a8a92">SOM CARREGADO</text>
+      <text x="421" y="${p4y + 56}" ${mono} font-size="8" letter-spacing="1.5" text-anchor="middle" fill="#8a8a92">${t("ppLoaded")}</text>
       <text x="421" y="${p4y + 82}" ${sysf} font-size="15" font-weight="800" text-anchor="middle" fill="#ff8a3a" filter="url(#mnPpGlow)">A01-1</text>
-      <text x="280" y="${p4y + p4h - 14}" ${sysf} font-size="9.5" text-anchor="middle" style="fill:var(--muted)">Não trocou? Confira o canal MIDI e o cabo BFMiDi → pedaleira.</text>
+      <text x="280" y="${p4y + p4h - 14}" ${sysf} font-size="9.5" text-anchor="middle" style="fill:var(--muted)">${t("ppHintTest")}</text>
 
-      <text x="280" y="${total - 12}" ${mono} font-size="9.5" letter-spacing="0.8" text-anchor="middle" style="fill:var(--muted)">PRESET = ATALHO · PC = O SOM · SAVE GRAVA · PISOU, TROCOU</text>
+      <text x="280" y="${total - 12}" ${mono} font-size="9.5" letter-spacing="0.8" text-anchor="middle" style="fill:var(--muted)">${t("ppSummary")}</text>
     </svg>`;
 
     return `<div class="mn-block-label">${esc(t("previewReal"))}</div>
-      ${stepHtml(1, tag("escolher"), "ESCOLHA UM PRESET NO APP", "Página PRESET — banco A, toque no botão 1 (ele fica laranja)")}
+      ${stepHtml(1, tag("escolher"), esc(t("ppS1t")), esc(t("ppS1s")))}
       <div class="mn-mock mn-mock-bank bf-screen mn-ppflow-app">
         <div class="bf-content-bank">${bankRowHtml}</div>
       </div>
       ${arrowHtml()}
-      ${stepHtml(2, tag("som"), "DIGA QUAL SOM CARREGAR", "Card PRINCIPAL — PC = o som da pedaleira · canal = qual aparelho (na dúvida, 1)")}
+      ${stepHtml(2, tag("som"), esc(t("ppS2t")), esc(t("ppS2s")))}
       <div class="mn-mock mn-mock-bank bf-screen mn-ppflow-app">
         <div class="bf-content-bank">${mainCardHtml}</div>
       </div>
@@ -2510,7 +2610,7 @@
         <div class="bf-content-system">
           <div class="bf-card">
             ${mockHead(card.mockTitle || "Conexões físicas", current.id)}
-            <span class="bfg-select-eyebrow">FAMÍLIA</span>
+            <span class="bfg-select-eyebrow">${esc(t("hwFamily"))}</span>
             <div class="bfg-family-grid mn-cell">
               ${tag("modelo")}
               ${MN_CONNECTION_FAMILIES.map((f) => {
@@ -2525,7 +2625,7 @@
                   </button>`;
               }).join("")}
             </div>
-            <span class="bfg-select-eyebrow bfg-model-eyebrow-2">VARIANTE · ${esc(family)}</span>
+            <span class="bfg-select-eyebrow bfg-model-eyebrow-2">${esc(t("hwVariant"))} · ${esc(family)}</span>
             <div class="bfg-variant-list">
               ${variants.map((v) => {
                 const on = current.id === v.id;
