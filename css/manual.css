@@ -1018,6 +1018,47 @@ body.is-theme-light .mn-svg-placeholder svg { stroke: rgba(22,32,46,0.22); }
 .mn-flow-tag { position: absolute; }
 .mn-mock .mn-flow-tag .mk-tag { position: static; display: inline-flex; }
 
+/* Fluxo "meu primeiro preset" (preset-flow) — passos 1-2 usam os COMPONENTES
+   reais do app em HTML; estes estilos dão o cabeçalho de etapa (espelho do
+   step() dos SVGs), a seta entre blocos e o cursor de toque pulsante. */
+.mn-ppstep {
+  display: flex; gap: 11px; align-items: flex-start;
+  max-width: 620px; margin: 16px auto 10px;
+}
+.mn-ppstep-n {
+  flex: none; width: 24px; height: 24px; border-radius: 50%;
+  border: 2.4px solid var(--accent); color: var(--accent-2);
+  font: 800 13px/1 var(--font-mono);
+  display: grid; place-items: center;
+}
+.mn-ppstep-txt { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.mn-ppstep-t {
+  font: 700 11.5px var(--font-mono); letter-spacing: 1px; color: var(--text);
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.mn-ppstep-t .mk-tag { position: static; display: inline-flex; }
+.mn-ppstep-s { font: 10.5px var(--font-sys); color: var(--muted); }
+.mn-ppflow-arrow {
+  display: flex; justify-content: center; margin: 2px 0;
+  filter: drop-shadow(0 0 6px var(--accent-glow));
+}
+.mn-mock.mn-ppflow-app { max-width: 620px; margin: 0 auto; }
+.mn-ppflow-tap-host { position: relative; }
+.mn-ppflow-tap {
+  position: absolute; right: 10px; bottom: 8px; width: 17px; height: 17px;
+  border-radius: 50%; border: 2px solid var(--accent);
+  background: rgba(255,106,31,0.22); pointer-events: none; z-index: 3;
+  animation: mnPpflowTap 1.6s ease-in-out infinite;
+}
+.mn-ppflow-tap::after {
+  content: ""; position: absolute; inset: 4.5px; border-radius: 50%;
+  background: var(--accent);
+}
+@keyframes mnPpflowTap {
+  0%, 100% { transform: scale(0.85); opacity: 1; }
+  50%      { transform: scale(1.25); opacity: 0.55; }
+}
+
 /* Prévia do tile na aba DISPLAY do SW (placeholder do SwDisplayTile) */
 .mn-disp-tile {
   width: 96px;

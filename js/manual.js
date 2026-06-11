@@ -657,11 +657,13 @@
       </div>`;
   }
 
-  /* ─────────── Meu primeiro preset (SVG ilustrativo, 4 passos) ───────────
+  /* ─────────── Meu primeiro preset (hibrido, 4 passos) ───────────
      Passo a passo PRA LEIGOS, irmao do acesso-flow: escolher o preset no
      app → dizer qual som (PC) → salvar → pisar e a pedaleira trocar.
-     Celulares seguem o tema (--mock-phone-*); o display da PEDALEIRA fica
-     dark de proposito (tela de dispositivo, igual intro-flow). */
+     Passos 1-2 usam os COMPONENTES REAIS do app em HTML (bf-bank-row +
+     card PRINCIPAL Studio, mesmos dos mocks p-top/p-main) com o cursor de
+     toque em CSS; passos 3-4 seguem em SVG (SAVE + controladora→pedaleira,
+     cujo display fica dark de proposito, igual intro-flow). */
   function renderFirstPresetFlowSvg(card, secIdx, cardIdx) {
     const tag = mockTagFactory(card, secIdx, cardIdx);
     const mono = 'font-family="JetBrains Mono, ui-monospace, monospace"';
@@ -690,35 +692,77 @@
       </circle>
       <circle cx="${cx}" cy="${cy}" r="3.2" fill="#ff6a1f"/>`;
 
-    // Campo de formulario dentro do celular (label em cima + caixa com valor).
-    const field = (x, y, w, label, value, hot) => `
-      <text x="${x + 2}" y="${y - 4}" ${mono} font-size="7.5" letter-spacing="1.2" style="fill:var(--faint)">${label}</text>
-      <rect x="${x}" y="${y}" width="${w}" height="28" rx="8"
-        style="fill:var(--card-2);stroke:${hot ? "#ff6a1f" : "var(--hair-strong)"};stroke-width:${hot ? 1.8 : 1.1}"/>
-      <text x="${x + 10}" y="${y + 18.5}" ${sysf} font-size="11" font-weight="${hot ? 800 : 600}" style="fill:${hot ? "var(--accent)" : "var(--text)"}">${value}</text>`;
-
-    // Geometria vertical das 4 etapas.
-    const p1y = 64, p1h = 226;             // passo 1: pagina PRESET (escolher slot)
-    const p2y = p1y + p1h + 96, p2h = 236;  // passo 2: card PRINCIPAL (PC/canal/nome)
-    const p3y = p2y + p2h + 96, p3h = 140;  // passo 3: SAVE
-    const p4y = p3y + p3h + 96, p4h = 190;  // passo 4: pisar -> pedaleira troca
+    // Geometria vertical do SVG (so passos 3 e 4 — os passos 1 e 2 usam os
+    // COMPONENTES REAIS do app em HTML, montados no return).
+    const p3y = 64, p3h = 140;             // passo 3: SAVE
+    const p4y = p3y + p3h + 96, p4h = 190; // passo 4: pisar -> pedaleira troca
     const total = p4y + p4h + 46;
     const px = 168, pw = 224;
 
-    // Grade 3x2 de botoes de preset (passo 1) — botao 1 em destaque.
-    const presetGrid = [0, 1, 2, 3, 4, 5].map((i) => {
-      const col = i % 3, row = (i / 3) | 0;
-      const tx = px + 22 + col * ((pw - 44 - 16) / 3 + 8);
-      const ty = p1y + 102 + row * 52;
-      const tw = (pw - 44 - 16) / 3;
-      return `<rect x="${tx}" y="${ty}" width="${tw}" height="44" rx="9"
-          style="fill:var(--card-2);stroke:${i === 0 ? "#ff6a1f" : "var(--hair-strong)"};stroke-width:${i === 0 ? 1.8 : 1.1}"/>
-        <text x="${tx + tw / 2}" y="${ty + 27}" ${mono} font-size="11" font-weight="800" text-anchor="middle" style="fill:${i === 0 ? "var(--accent)" : "var(--faint)"}">${i + 1}</text>`;
-    }).join("");
+    // ── Passos 1 e 2 em HTML: markup real do webApp (mesmos componentes dos
+    // mocks p-top / p-main), com o cursor de toque em CSS por cima. ──
+    const stepHtml = (n, tagHtml, title, sub) => `
+      <div class="mn-ppstep">
+        <span class="mn-ppstep-n">${n}</span>
+        <div class="mn-ppstep-txt">
+          <span class="mn-ppstep-t">${title}${tagHtml}</span>
+          <span class="mn-ppstep-s">${sub}</span>
+        </div>
+      </div>`;
+    const arrowHtml = () => `
+      <div class="mn-ppflow-arrow" aria-hidden="true">
+        <svg width="24" height="46" viewBox="0 0 24 46">
+          <line x1="12" y1="3" x2="12" y2="31" stroke="#ff6a1f" stroke-width="6" stroke-linecap="round"/>
+          <path d="M12 44 l-8 -13 h16 z" fill="#ff6a1f"/>
+        </svg>
+      </div>`;
+    // O cursor de toque (.mn-ppflow-tap) vai DENTRO do elemento alvo
+    // (.mn-ppflow-tap-host = position:relative) — segue o layout real do
+    // componente sem coordenadas manuais.
+    const tapHtml = `<span class="mn-ppflow-tap" aria-hidden="true"></span>`;
+    const presetBtn = (n, active) => `
+      <button type="button" class="bf-preset${active ? " is-active mn-ppflow-tap-host" : ""}" tabindex="-1">
+        <span class="led"></span><span class="num">${n}</span><span class="label">PRESET</span>
+        ${active ? tapHtml : ""}
+      </button>`;
+    const bankRowHtml = `
+      <div class="bf-bank-row">
+        <button type="button" class="bf-bank-tile" tabindex="-1">
+          <span class="led"></span>
+          <span class="letter">A</span>
+          <span class="bf-bank-name">MEU SET</span>
+        </button>
+        ${presetBtn(1, true)}${presetBtn(2, false)}${presetBtn(3, false)}${presetBtn(4, false)}${presetBtn(5, false)}${presetBtn(6, false)}
+      </div>`;
+    const mainCardHtml = `
+      <section class="bf-studio-now-playing">
+        <div class="bf-studio-np-head">
+          <span class="bf-studio-np-eyebrow">• PRINCIPAL</span>
+        </div>
+        <div class="bf-studio-np-title-row bf-studio-np-title-row-accent">
+          <span class="bf-studio-np-accent-bar" aria-hidden="true"></span>
+          <div class="bf-studio-np-title-wrap">
+            <h2 class="bf-studio-np-title">Música 1</h2>
+          </div>
+        </div>
+        <div class="bf-studio-np-meta">
+          <div class="bf-studio-picker">
+            <button type="button" class="bf-studio-np-pill bf-studio-np-pill-lg is-accent mn-ppflow-tap-host" tabindex="-1">
+              <span class="bf-studio-np-pill-l">PC</span>
+              <span class="bf-studio-np-pill-v">A01-1</span>
+              <span class="bf-studio-np-pill-chev">▾</span>
+              ${tapHtml}
+            </button>
+          </div>
+          <div class="bf-studio-np-extra-wrap is-no-x">
+            <div class="bf-studio-picker">${npPill("Canal", "CH 01")}</div>
+          </div>
+        </div>
+      </section>`;
 
     const svg = `
     <svg viewBox="0 0 560 ${total}" xmlns="http://www.w3.org/2000/svg" role="img"
-         aria-label="Passo a passo: escolher o preset 1 no app, escolher o som (PC) e o canal, salvar, e pisar no footswitch para a pedaleira trocar de som">
+         aria-label="Passos finais: tocar em SAVE e pisar no footswitch para a pedaleira trocar de som">
       <defs>
         <linearGradient id="mnPpAccentV" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stop-color="#ff8a3a"/>
@@ -730,36 +774,8 @@
         </filter>
       </defs>
 
-      <!-- PASSO 1: escolher o preset no app -->
-      ${step(1, 36, "ESCOLHA UM PRESET NO APP", "Página PRESET — banco A, toque no botão 1")}
-      ${phone(px, p1y, pw, p1h)}
-      <rect x="${px + 18}" y="${p1y + 32}" width="${pw - 36}" height="22" rx="7" style="fill:var(--card-2);stroke:var(--hair-strong);stroke-width:1"/>
-      <text x="${px + pw / 2}" y="${p1y + 47}" ${mono} font-size="9.5" font-weight="800" letter-spacing="2" text-anchor="middle" style="fill:var(--accent)">BFMiDi · PRESET</text>
-      <rect x="${px + 22}" y="${p1y + 64}" width="${pw - 44}" height="26" rx="8" style="fill:var(--card-2);stroke:var(--hair-strong);stroke-width:1.1"/>
-      <text x="${px + 34}" y="${p1y + 81}" ${mono} font-size="10" font-weight="800" style="fill:var(--accent)">A</text>
-      <text x="${px + 50}" y="${p1y + 81}" ${sysf} font-size="9.5" style="fill:var(--muted)">BANCO A</text>
-      ${presetGrid}
-      ${tap(px + 22 + ((pw - 44 - 16) / 3) - 8, p1y + 102 + 36)}
-      <text x="280" y="${p1y + p1h - 12}" ${mono} font-size="9" letter-spacing="1" text-anchor="middle" style="fill:var(--accent)">O BOTÃO 1 FICA LARANJA</text>
-
-      ${downArrow(p1y + p1h + 14, p2y - 14, "")}
-
-      <!-- PASSO 2: dizer qual som a pedaleira carrega -->
-      ${step(2, p2y - 28, "DIGA QUAL SOM CARREGAR", "Card PRINCIPAL — o PC é o som da sua pedaleira")}
-      ${phone(px, p2y, pw, p2h)}
-      <text x="${px + pw / 2}" y="${p2y + 44}" ${mono} font-size="9" font-weight="800" letter-spacing="1.5" text-anchor="middle" style="fill:var(--accent)">• PRINCIPAL</text>
-      ${field(px + 22, p2y + 64, pw - 44, "NOME", "Música 1", false)}
-      ${field(px + 22, p2y + 112, (pw - 44 - 10) * 0.58, "PC (O SOM)", "A01-1", true)}
-      ${field(px + 22 + (pw - 44 - 10) * 0.58 + 10, p2y + 112, (pw - 44 - 10) * 0.42, "CANAL", "1", false)}
-      ${tap(px + 22 + (pw - 44 - 10) * 0.29, p2y + 126)}
-      <text x="${px + pw / 2}" y="${p2y + 170}" ${sysf} font-size="9.5" text-anchor="middle" style="fill:var(--muted)">Na Ampero, o PC é o A01-1, A01-2…</text>
-      <text x="${px + pw / 2}" y="${p2y + 186}" ${sysf} font-size="9.5" text-anchor="middle" style="fill:var(--muted)">Na dúvida, canal 1.</text>
-      <text x="280" y="${p2y + p2h - 12}" ${mono} font-size="9" letter-spacing="1" text-anchor="middle" style="fill:var(--accent)">PC = QUAL SOM · CANAL = QUAL APARELHO</text>
-
-      ${downArrow(p2y + p2h + 14, p3y - 14, "")}
-
       <!-- PASSO 3: salvar -->
-      ${step(3, p3y - 28, "TOQUE EM SAVE", "Nada é gravado até salvar — fica na barra de baixo")}
+      ${step(3, 36, "TOQUE EM SAVE", "Nada é gravado até salvar — fica na barra de baixo")}
       ${phone(px, p3y, pw, p3h)}
       ${[0, 1].map((i) => `<rect x="${px + 22 + i * 52}" y="${p3y + 44}" width="42" height="30" rx="8" style="fill:var(--card-2);stroke:var(--hair-strong);stroke-width:1"/>`).join("")}
       <rect x="${px + pw - 96}" y="${p3y + 40}" width="74" height="38" rx="10" fill="#ff6a1f"/>
@@ -800,13 +816,21 @@
     </svg>`;
 
     return `<div class="mn-block-label">${esc(t("previewReal"))}</div>
+      ${stepHtml(1, tag("escolher"), "ESCOLHA UM PRESET NO APP", "Página PRESET — banco A, toque no botão 1 (ele fica laranja)")}
+      <div class="mn-mock mn-mock-bank bf-screen mn-ppflow-app">
+        <div class="bf-content-bank">${bankRowHtml}</div>
+      </div>
+      ${arrowHtml()}
+      ${stepHtml(2, tag("som"), "DIGA QUAL SOM CARREGAR", "Card PRINCIPAL — PC = o som da pedaleira · canal = qual aparelho (na dúvida, 1)")}
+      <div class="mn-mock mn-mock-bank bf-screen mn-ppflow-app">
+        <div class="bf-content-bank">${mainCardHtml}</div>
+      </div>
+      ${arrowHtml()}
       <div class="mn-mock mn-mock-flow bf-screen">
         <div class="mn-flow-wrap">
           ${svg}
-          <span class="mn-flow-tag" style="left:78%;top:6%">${tag("escolher")}</span>
-          <span class="mn-flow-tag" style="left:78%;top:33%">${tag("som")}</span>
-          <span class="mn-flow-tag" style="left:78%;top:60%">${tag("salvar")}</span>
-          <span class="mn-flow-tag" style="left:90%;top:82%">${tag("pisar")}</span>
+          <span class="mn-flow-tag" style="left:78%;top:7%">${tag("salvar")}</span>
+          <span class="mn-flow-tag" style="left:90%;top:53%">${tag("pisar")}</span>
         </div>
       </div>`;
   }
