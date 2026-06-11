@@ -2256,6 +2256,45 @@
     </svg>`;
   }
 
+  // BFMIDI-3 7SW+ — vista superior idêntica ao 3 7S (reusa mnHwTopSvg37s).
+  // Traseira = a mesma 5 portas do 3 7S + EXP IN e DUAL SW IN (jacks na
+  // LATERAL, indicados por setas apontando pra esquerda).
+  function mnHwRearSvg37swplus() {
+    const port = (x, arrowEnd, labelY, lines) => {
+      const arrow = `
+        <line x1="${x}" y1="106" x2="${x}" y2="${arrowEnd - 8}" style="stroke:var(--muted)" stroke-width="1.8"/>
+        <path d="M ${x} ${arrowEnd} l -6 -10 h 12 z" style="fill:var(--muted)"/>`;
+      const txt = lines.map((l, i) =>
+        `<text x="${x}" y="${labelY + i * 16}" text-anchor="middle" font-family="JetBrains Mono, ui-monospace, monospace" font-size="12" letter-spacing="0.8" style="fill:var(--text)">${l}</text>`
+      ).join("");
+      return arrow + txt;
+    };
+    // Entrada lateral: seta apontando pra ESQUERDA (jack na lateral esquerda).
+    const sideIn = (y, label) => `
+      <line x1="213" y1="${y}" x2="138" y2="${y}" style="stroke:var(--muted)" stroke-width="1.8"/>
+      <path d="M 130 ${y} l 10 -5 v 10 z" style="fill:var(--muted)"/>
+      <text x="122" y="${y + 4.5}" text-anchor="end" font-family="JetBrains Mono, ui-monospace, monospace" font-size="13" letter-spacing="0.8" style="fill:var(--text)">${label}</text>`;
+    return `
+    <svg viewBox="0 0 800 335" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Vista traseira do BFMIDI-3 7SW+: EXP IN e DUAL SW IN na lateral; 9v, USB DEVICE, MIDI DIN5 OUT, MIDI TRS OUT e USB HOST">
+      <rect x="215" y="14" width="575" height="92" rx="10" fill="none" style="stroke:var(--accent)" stroke-width="2.2"/>
+      <circle cx="250" cy="90" r="4" fill="none" style="stroke:var(--accent)" stroke-width="1.7"/>
+      <circle cx="755" cy="90" r="4" fill="none" style="stroke:var(--accent)" stroke-width="1.7"/>
+      <rect x="286" y="44" width="28" height="28" rx="2" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      <rect x="373" y="49" width="44" height="18" rx="9" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      <circle cx="545" cy="55" r="22" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      <circle cx="625" cy="58" r="15" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      <rect x="698" y="49" width="44" height="18" rx="9" fill="none" style="stroke:var(--accent)" stroke-width="1.8"/>
+      ${sideIn(44, "EXP IN")}
+      ${sideIn(66, "DUAL SW IN")}
+      ${port(300, 265, 285, ["9v", "+(-)"])}
+      ${port(395, 195, 215, ["USB", "DEVICE"])}
+      ${port(545, 195, 215, ["MIDI", "Din5", "OUT"])}
+      ${port(625, 285, 305, ["MIDI", "TRS OUT"])}
+      ${port(720, 230, 250, ["USB", "HOST"])}
+    </svg>`;
+  }
+
   // Mapa modelo -> desenhos {top, rear}. startsWith cobre as variantes
   // (BFMIDI-1 7S_A1/_B1/_C1 compartilham o mesmo painel).
   function mnHwSvgsFor(modelId) {
@@ -2283,6 +2322,10 @@
     }
     if (modelId === "BFMIDI-3 7S") {
       return { top: mnHwTopSvg37s(), rear: mnHwRearSvg37s() };
+    }
+    if (modelId === "BFMIDI-3 7SW+") {
+      // Mesmo topo do 3 7S; traseira ganha EXP IN + DUAL SW IN (lateral).
+      return { top: mnHwTopSvg37s(), rear: mnHwRearSvg37swplus() };
     }
     return null;
   }
