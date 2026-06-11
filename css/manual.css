@@ -371,6 +371,72 @@ code {
 
 /* ───────────────────────── Home ───────────────────────── */
 .mn-hero { padding: 18px 4px 8px; }
+
+/* ───────── Banner da home — só "MANUAL DO USUÁRIO" ─────────
+   Card largo com gradiente + glows ambient (laranja/azul, mesmo clima do
+   studio redesign do app), tipografia display condensada e a fileira de 6
+   pontinhos (referência aos 6 footswitches, o 1º aceso). O texto vem de
+   t("heroPre"/"heroAccent") — traduz junto com o resto do manual. */
+.mn-hero-banner {
+  position: relative;
+  overflow: hidden;
+  margin: 18px 0 24px;
+  padding: clamp(36px, 7vw, 60px) 20px;
+  border: 1px solid var(--hair-strong);
+  border-radius: var(--r-xl);
+  background:
+    radial-gradient(640px 260px at 10% -30%, rgba(255,106,31,0.17) 0%, transparent 62%),
+    radial-gradient(540px 240px at 94% 130%, rgba(10,132,255,0.10) 0%, transparent 62%),
+    linear-gradient(180deg, var(--card-2) 0%, var(--card) 100%);
+  text-align: center;
+}
+.mn-hero-banner::before {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.07);
+  pointer-events: none;
+}
+.mn-hero-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(34px, 8.5vw, 64px);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.mn-hero-title .accent {
+  background: linear-gradient(135deg, #ff8a3a 0%, #ff6a1f 70%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 0 16px rgba(255,106,31,0.35));
+}
+.mn-hero-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: clamp(14px, 3vw, 20px);
+}
+.mn-hero-dots span {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--ghost);
+}
+.mn-hero-dots span.on {
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+body.is-theme-light .mn-hero-banner {
+  background:
+    radial-gradient(640px 260px at 10% -30%, rgba(255,106,31,0.12) 0%, transparent 62%),
+    radial-gradient(540px 240px at 94% 130%, rgba(10,132,255,0.08) 0%, transparent 62%),
+    linear-gradient(180deg, #ffffff 0%, var(--card-2) 100%);
+}
+body.is-theme-light .mn-hero-banner::before { box-shadow: inset 0 1px 0 rgba(255,255,255,0.8); }
 .mn-eyebrow {
   font-family: var(--font-mono);
   font-size: 11px;

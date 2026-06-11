@@ -407,10 +407,11 @@
       </a>`).join("");
 
     main.innerHTML = `
-      <div class="mn-hero">
-        <div class="mn-eyebrow"><span class="dot"></span>${esc(t("eyebrow"))}</div>
-        <h1 class="mn-title">${esc(t("heroPre"))} <span class="accent">${esc(t("heroAccent"))}</span></h1>
-        <p class="mn-subtitle">${esc(pickLang(MN_CONTENT.tagline))}</p>
+      <div class="mn-hero-banner">
+        <h1 class="mn-hero-title">${esc(t("heroPre"))} <span class="accent">${esc(t("heroAccent"))}</span></h1>
+        <div class="mn-hero-dots" aria-hidden="true">
+          <span class="on"></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
       </div>
       <div class="mn-section-label">${esc(mnHomePage === 1 ? t("pageBasics") : t("pageFull"))}</div>
       <div class="mn-home-grid">${tiles}</div>
