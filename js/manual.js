@@ -657,6 +657,160 @@
       </div>`;
   }
 
+  /* ─────────── Meu primeiro preset (SVG ilustrativo, 4 passos) ───────────
+     Passo a passo PRA LEIGOS, irmao do acesso-flow: escolher o preset no
+     app → dizer qual som (PC) → salvar → pisar e a pedaleira trocar.
+     Celulares seguem o tema (--mock-phone-*); o display da PEDALEIRA fica
+     dark de proposito (tela de dispositivo, igual intro-flow). */
+  function renderFirstPresetFlowSvg(card, secIdx, cardIdx) {
+    const tag = mockTagFactory(card, secIdx, cardIdx);
+    const mono = 'font-family="JetBrains Mono, ui-monospace, monospace"';
+    const sysf = 'font-family="-apple-system, Segoe UI, sans-serif"';
+
+    const step = (n, y, title, sub) => `
+      <circle cx="44" cy="${y}" r="12" fill="none" stroke="#ff6a1f" stroke-width="2.4"/>
+      <text x="44" y="${y + 4.5}" ${mono} font-size="13" font-weight="800" text-anchor="middle" fill="#ff8a3a">${n}</text>
+      <text x="66" y="${y - 1}" ${mono} font-size="11.5" font-weight="700" letter-spacing="1" style="fill:var(--text)">${title}</text>
+      <text x="66" y="${y + 14}" ${sysf} font-size="10.5" style="fill:var(--muted)">${sub}</text>`;
+
+    const downArrow = (y1, y2, label) => `
+      <line x1="280" y1="${y1}" x2="280" y2="${y2 - 10}" stroke="url(#mnPpAccentV)" stroke-width="6" stroke-linecap="round" filter="url(#mnPpGlow)"/>
+      <path d="M 280 ${y2} l -7 -12 h 14 z" fill="#ff6a1f" filter="url(#mnPpGlow)"/>
+      ${label ? `<text x="296" y="${(y1 + y2) / 2 + 3}" ${mono} font-size="9" letter-spacing="1" fill="#ff8a3a">${label}</text>` : ""}`;
+
+    const phone = (x, y, w, h) => `
+      <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="24" style="fill:var(--card);stroke:var(--hair-strong);stroke-width:1.6"/>
+      <rect x="${x + 9}" y="${y + 18}" width="${w - 18}" height="${h - 28}" rx="14" style="fill:var(--mock-phone-screen);stroke:var(--mock-phone-hair)"/>
+      <rect x="${x + w / 2 - 20}" y="${y + 8}" width="40" height="4.5" rx="2.25" style="fill:var(--mock-phone-speaker)"/>`;
+
+    const tap = (cx, cy) => `
+      <circle cx="${cx}" cy="${cy}" r="9" fill="rgba(255,106,31,0.22)" stroke="#ff6a1f" stroke-width="2">
+        <animate attributeName="r" values="7;12;7" dur="1.6s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="1;0.5;1" dur="1.6s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="${cx}" cy="${cy}" r="3.2" fill="#ff6a1f"/>`;
+
+    // Campo de formulario dentro do celular (label em cima + caixa com valor).
+    const field = (x, y, w, label, value, hot) => `
+      <text x="${x + 2}" y="${y - 4}" ${mono} font-size="7.5" letter-spacing="1.2" style="fill:var(--faint)">${label}</text>
+      <rect x="${x}" y="${y}" width="${w}" height="28" rx="8"
+        style="fill:var(--card-2);stroke:${hot ? "#ff6a1f" : "var(--hair-strong)"};stroke-width:${hot ? 1.8 : 1.1}"/>
+      <text x="${x + 10}" y="${y + 18.5}" ${sysf} font-size="11" font-weight="${hot ? 800 : 600}" style="fill:${hot ? "var(--accent)" : "var(--text)"}">${value}</text>`;
+
+    // Geometria vertical das 4 etapas.
+    const p1y = 64, p1h = 226;             // passo 1: pagina PRESET (escolher slot)
+    const p2y = p1y + p1h + 96, p2h = 236;  // passo 2: card PRINCIPAL (PC/canal/nome)
+    const p3y = p2y + p2h + 96, p3h = 140;  // passo 3: SAVE
+    const p4y = p3y + p3h + 96, p4h = 190;  // passo 4: pisar -> pedaleira troca
+    const total = p4y + p4h + 46;
+    const px = 168, pw = 224;
+
+    // Grade 3x2 de botoes de preset (passo 1) — botao 1 em destaque.
+    const presetGrid = [0, 1, 2, 3, 4, 5].map((i) => {
+      const col = i % 3, row = (i / 3) | 0;
+      const tx = px + 22 + col * ((pw - 44 - 16) / 3 + 8);
+      const ty = p1y + 102 + row * 52;
+      const tw = (pw - 44 - 16) / 3;
+      return `<rect x="${tx}" y="${ty}" width="${tw}" height="44" rx="9"
+          style="fill:var(--card-2);stroke:${i === 0 ? "#ff6a1f" : "var(--hair-strong)"};stroke-width:${i === 0 ? 1.8 : 1.1}"/>
+        <text x="${tx + tw / 2}" y="${ty + 27}" ${mono} font-size="11" font-weight="800" text-anchor="middle" style="fill:${i === 0 ? "var(--accent)" : "var(--faint)"}">${i + 1}</text>`;
+    }).join("");
+
+    const svg = `
+    <svg viewBox="0 0 560 ${total}" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Passo a passo: escolher o preset 1 no app, escolher o som (PC) e o canal, salvar, e pisar no footswitch para a pedaleira trocar de som">
+      <defs>
+        <linearGradient id="mnPpAccentV" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ff8a3a"/>
+          <stop offset="1" stop-color="#ff6a1f"/>
+        </linearGradient>
+        <filter id="mnPpGlow" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="3" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- PASSO 1: escolher o preset no app -->
+      ${step(1, 36, "ESCOLHA UM PRESET NO APP", "Página PRESET — banco A, toque no botão 1")}
+      ${phone(px, p1y, pw, p1h)}
+      <rect x="${px + 18}" y="${p1y + 32}" width="${pw - 36}" height="22" rx="7" style="fill:var(--card-2);stroke:var(--hair-strong);stroke-width:1"/>
+      <text x="${px + pw / 2}" y="${p1y + 47}" ${mono} font-size="9.5" font-weight="800" letter-spacing="2" text-anchor="middle" style="fill:var(--accent)">BFMiDi · PRESET</text>
+      <rect x="${px + 22}" y="${p1y + 64}" width="${pw - 44}" height="26" rx="8" style="fill:var(--card-2);stroke:var(--hair-strong);stroke-width:1.1"/>
+      <text x="${px + 34}" y="${p1y + 81}" ${mono} font-size="10" font-weight="800" style="fill:var(--accent)">A</text>
+      <text x="${px + 50}" y="${p1y + 81}" ${sysf} font-size="9.5" style="fill:var(--muted)">BANCO A</text>
+      ${presetGrid}
+      ${tap(px + 22 + ((pw - 44 - 16) / 3) - 8, p1y + 102 + 36)}
+      <text x="280" y="${p1y + p1h - 12}" ${mono} font-size="9" letter-spacing="1" text-anchor="middle" style="fill:var(--accent)">O BOTÃO 1 FICA LARANJA</text>
+
+      ${downArrow(p1y + p1h + 14, p2y - 14, "")}
+
+      <!-- PASSO 2: dizer qual som a pedaleira carrega -->
+      ${step(2, p2y - 28, "DIGA QUAL SOM CARREGAR", "Card PRINCIPAL — o PC é o som da sua pedaleira")}
+      ${phone(px, p2y, pw, p2h)}
+      <text x="${px + pw / 2}" y="${p2y + 44}" ${mono} font-size="9" font-weight="800" letter-spacing="1.5" text-anchor="middle" style="fill:var(--accent)">• PRINCIPAL</text>
+      ${field(px + 22, p2y + 64, pw - 44, "NOME", "Música 1", false)}
+      ${field(px + 22, p2y + 112, (pw - 44 - 10) * 0.58, "PC (O SOM)", "A01-1", true)}
+      ${field(px + 22 + (pw - 44 - 10) * 0.58 + 10, p2y + 112, (pw - 44 - 10) * 0.42, "CANAL", "1", false)}
+      ${tap(px + 22 + (pw - 44 - 10) * 0.29, p2y + 126)}
+      <text x="${px + pw / 2}" y="${p2y + 170}" ${sysf} font-size="9.5" text-anchor="middle" style="fill:var(--muted)">Na Ampero, o PC é o A01-1, A01-2…</text>
+      <text x="${px + pw / 2}" y="${p2y + 186}" ${sysf} font-size="9.5" text-anchor="middle" style="fill:var(--muted)">Na dúvida, canal 1.</text>
+      <text x="280" y="${p2y + p2h - 12}" ${mono} font-size="9" letter-spacing="1" text-anchor="middle" style="fill:var(--accent)">PC = QUAL SOM · CANAL = QUAL APARELHO</text>
+
+      ${downArrow(p2y + p2h + 14, p3y - 14, "")}
+
+      <!-- PASSO 3: salvar -->
+      ${step(3, p3y - 28, "TOQUE EM SAVE", "Nada é gravado até salvar — fica na barra de baixo")}
+      ${phone(px, p3y, pw, p3h)}
+      ${[0, 1].map((i) => `<rect x="${px + 22 + i * 52}" y="${p3y + 44}" width="42" height="30" rx="8" style="fill:var(--card-2);stroke:var(--hair-strong);stroke-width:1"/>`).join("")}
+      <rect x="${px + pw - 96}" y="${p3y + 40}" width="74" height="38" rx="10" fill="#ff6a1f"/>
+      <text x="${px + pw - 59}" y="${p3y + 64}" ${mono} font-size="11.5" font-weight="800" letter-spacing="1.5" text-anchor="middle" fill="#16161a">SAVE</text>
+      ${tap(px + pw - 40, p3y + 72)}
+      <text x="${px + pw / 2}" y="${p3y + p3h - 16}" ${sysf} font-size="9.5" text-anchor="middle" style="fill:var(--muted)">Esqueceu o SAVE? A mudança se perde.</text>
+
+      ${downArrow(p3y + p3h + 14, p4y - 14, "")}
+
+      <!-- PASSO 4: pisar no footswitch -> pedaleira troca o som -->
+      ${step(4, p4y - 28, "PISE E TESTE", "Pisou no footswitch 1 → a pedaleira pula pro som escolhido")}
+      <rect x="44" y="${p4y}" width="216" height="${p4h - 40}" rx="14" style="fill:var(--card);stroke:var(--hair-strong);stroke-width:1.4"/>
+      <text x="152" y="${p4y + 22}" ${mono} font-size="8.5" letter-spacing="1.5" text-anchor="middle" style="fill:var(--faint)">CONTROLADORA · BFMiDi</text>
+      ${[0, 1, 2, 3, 4, 5].map((i) => {
+        const col = i % 3, row = (i / 3) | 0;
+        const cx = 92 + col * 60;
+        const cy = p4y + ((row === 0) ? 104 : 52);
+        const hot = i === 0;
+        return `<circle cx="${cx}" cy="${cy}" r="15" style="fill:var(--card-2);stroke:${hot ? "#ff6a1f" : "var(--hair-strong)"};stroke-width:${hot ? 2.2 : 1.2}"/>
+          <text x="${cx}" y="${cy + 3.5}" ${mono} font-size="9" font-weight="800" text-anchor="middle" style="fill:${hot ? "var(--accent)" : "var(--faint)"}">${i + 1}</text>`;
+      }).join("")}
+      ${tap(92, p4y + 104)}
+      <g opacity="0.95">
+        <line x1="266" y1="${p4y + 72}" x2="316" y2="${p4y + 72}" stroke="#ff6a1f" stroke-width="2" stroke-dasharray="6 5">
+          <animate attributeName="stroke-dashoffset" values="22;0" dur="1.2s" repeatCount="indefinite"/>
+        </line>
+        <path d="M 320 ${p4y + 72} l -8 -4.5 v 9 z" fill="#ff6a1f"/>
+        <text x="292" y="${p4y + 60}" ${mono} font-size="8" letter-spacing="1" text-anchor="middle" fill="#ff8a3a">MIDI</text>
+      </g>
+      <rect x="326" y="${p4y}" width="190" height="${p4h - 40}" rx="14" style="fill:var(--card);stroke:var(--hair-strong);stroke-width:1.4"/>
+      <text x="421" y="${p4y + 22}" ${mono} font-size="8.5" letter-spacing="1.5" text-anchor="middle" style="fill:var(--faint)">PEDALEIRA (ex.: AMPERO)</text>
+      <rect x="344" y="${p4y + 36}" width="154" height="62" rx="9" fill="#0b0b0e" stroke="rgba(255,106,31,0.5)" stroke-width="1.4"/>
+      <text x="421" y="${p4y + 56}" ${mono} font-size="8" letter-spacing="1.5" text-anchor="middle" fill="#8a8a92">SOM CARREGADO</text>
+      <text x="421" y="${p4y + 82}" ${sysf} font-size="15" font-weight="800" text-anchor="middle" fill="#ff8a3a" filter="url(#mnPpGlow)">A01-1</text>
+      <text x="280" y="${p4y + p4h - 14}" ${sysf} font-size="9.5" text-anchor="middle" style="fill:var(--muted)">Não trocou? Confira o canal MIDI e o cabo BFMiDi → pedaleira.</text>
+
+      <text x="280" y="${total - 12}" ${mono} font-size="9.5" letter-spacing="0.8" text-anchor="middle" style="fill:var(--muted)">PRESET = ATALHO · PC = O SOM · SAVE GRAVA · PISOU, TROCOU</text>
+    </svg>`;
+
+    return `<div class="mn-block-label">${esc(t("previewReal"))}</div>
+      <div class="mn-mock mn-mock-flow bf-screen">
+        <div class="mn-flow-wrap">
+          ${svg}
+          <span class="mn-flow-tag" style="left:78%;top:6%">${tag("escolher")}</span>
+          <span class="mn-flow-tag" style="left:78%;top:33%">${tag("som")}</span>
+          <span class="mn-flow-tag" style="left:78%;top:60%">${tag("salvar")}</span>
+          <span class="mn-flow-tag" style="left:90%;top:82%">${tag("pisar")}</span>
+        </div>
+      </div>`;
+  }
+
   /* ─────────── Modo Amigável (SVG ilustrativo, antes/depois) ───────────
      Mesmo estilo vertical do fluxo: ① seletor com números crus → escolha do
      aparelho em GLOBAL›MIDI → ② o mesmo seletor com nomes amigáveis. */
@@ -2276,6 +2430,7 @@
   function renderMock(card, secIdx, cardIdx) {
     if (card.mockType === "intro-flow") return renderIntroFlowSvg(card, secIdx, cardIdx);
     if (card.mockType === "acesso-flow") return renderAccessFlowSvg(card, secIdx, cardIdx);
+    if (card.mockType === "preset-flow") return renderFirstPresetFlowSvg(card, secIdx, cardIdx);
     if (card.mockType === "match-flow") return renderMatchFlowSvg(card, secIdx, cardIdx);
     if (card.mockType === "connections-hardware") return renderConnectionsHardwareMock(card, secIdx, cardIdx);
     if (card.mockType === "wifi-sys") return renderWifiSysMock(card, secIdx, cardIdx);
